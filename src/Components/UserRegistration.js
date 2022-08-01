@@ -45,12 +45,12 @@ const UserRegistration = () => {
     const { id, token } = responseJSON;
     if (responseJSON.success) {
       localStorage.setItem("gasUser", JSON.stringify({ id, token }));
-      navigate("/dashboard");
+      navigate("/main");
     }
   };
 
   return (
-    <div>
+    <>
       <input
         placeholder="Username"
         onChange={(e) => setUsername(e.target.value)}
@@ -79,7 +79,7 @@ const UserRegistration = () => {
         Create Account
       </button>
       {showError && <p>{errorMsg}</p>}
-    </div>
+    </>
   );
 };
 

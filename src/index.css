@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@700&display=swap');
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,4 +12,94 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.login-page{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.login-page img{
+  height: 200px;
+}
+
+.auth{
+  width: 500px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-options{
+  width: 100%;
+  text-align: center;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.auth-options div{
+  padding: 5px;
+  border: 1px solid black;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom: none;
+  cursor: pointer;
+}
+
+.auth-details{
+  padding: 50px;
+  border: 1px solid black;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.user-view{
+  min-height: 100vh;
+
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.header{
+  background-color: #c44536;
+  padding-top: 10px;
+
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+}
+
+.header img{
+  height: 90px;
+}
+
+.header span{
+  grid-column: 3;
+  margin: 20px;
+  cursor: pointer;
+  font-family: 'Catamaran', sans-serif;
+  font-size: 1.3rem;
+}
+
+.dash{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  align-items: center;
+}
+
+.card{
+  margin: 0 10px;
+  height: 300px;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.card-label{
+  text-align: center;
 }

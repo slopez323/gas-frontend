@@ -20,14 +20,13 @@ const UserLogin = () => {
     const responseJSON = await response.json();
     const { id, token } = responseJSON;
     if (responseJSON.success) {
-      console.log(responseJSON.token);
       localStorage.setItem("gasUser", JSON.stringify({ id, token }));
-      navigate("/dashboard");
+      navigate("/main");
     }
   };
 
   return (
-    <div>
+    <>
       <input
         placeholder="Username"
         onChange={(e) => setUsername(e.target.value)}
@@ -44,7 +43,7 @@ const UserLogin = () => {
       >
         Log In
       </button>
-    </div>
+    </>
   );
 };
 
