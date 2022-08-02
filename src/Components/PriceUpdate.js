@@ -19,6 +19,7 @@ const PriceUpdate = ({ priceToUpdate, updatePrice, setShowUpdatePopup }) => {
                 <input
                   type="number"
                   max="9"
+                  key={i}
                   value={newPrice[i]}
                   onChange={(e) => {
                     const priceCopy = JSON.parse(JSON.stringify(newPrice));
@@ -28,7 +29,7 @@ const PriceUpdate = ({ priceToUpdate, updatePrice, setShowUpdatePopup }) => {
                 />
               );
             } else {
-              return <span>.</span>;
+              return <span key={i}>.</span>;
             }
           })}
         </div>
@@ -44,6 +45,7 @@ const PriceUpdate = ({ priceToUpdate, updatePrice, setShowUpdatePopup }) => {
         >
           Submit Price
         </button>
+        <button onClick={() => setShowUpdatePopup(false)}>Cancel</button>
       </div>
     </div>
   );

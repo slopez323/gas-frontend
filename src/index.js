@@ -4,6 +4,10 @@ import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { Wrapper } from "@googlemaps/react-wrapper";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en.json";
+
+TimeAgo.addDefaultLocale(en);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

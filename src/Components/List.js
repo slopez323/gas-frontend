@@ -1,28 +1,24 @@
 import { useState, useEffect, useRef } from "react";
 import PriceUpdate from "./PriceUpdate";
+import ReactTimeAgo from "react-time-ago";
 
-const emptyPrices = {
-  regular: {
-    cash: { price: "--" },
-    credit: { price: "--" },
-  },
-  midgrade: {
-    cash: { price: "--" },
-    credit: { price: "--" },
-  },
-  premium: {
-    cash: { price: "--" },
-    credit: { price: "--" },
-  },
-  diesel: {
-    cash: { price: "--" },
-    credit: { price: "--" },
-  },
+const GAS_PAYMENT = {
+  cash: { price: "--", updatedBy: "", updateTime: "" },
+  credit: { price: "--", updatedBy: "", updateTime: "" },
 };
+
+const GAS_TYPES = {
+  regular: GAS_PAYMENT,
+  midgrade: GAS_PAYMENT,
+  premium: GAS_PAYMENT,
+  diesel: GAS_PAYMENT,
+};
+
+const typeArr = ["regular", "midgrade", "premium", "diesel"];
 
 const List = ({ item, clicked, setClicked, username }) => {
   const { place_id, name, vicinity } = item;
-  const [prices, setPrices] = useState([]);
+  const [prices, setPrices] = useState(JSON.parse(JSON.stringify(GAS_TYPES)));
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
   const [priceToUpdate, setPriceToUpdate] = useState();
   const [reload, setReload] = useState();
@@ -55,7 +51,8 @@ const List = ({ item, clicked, setClicked, username }) => {
       const url = `${process.env.REACT_APP_URL_ENDPOINT}/stations/station/${placeId}`;
       const response = await fetch(url);
       const responseJSON = await response.json();
-      if (!responseJSON.no_prices) setPrices(responseJSON.message);
+      if (responseJSON.success && !responseJSON.no_prices)
+        setPrices(responseJSON.message);
     };
     fetchPrices(place_id);
   }, [reload]);
@@ -69,7 +66,7 @@ const List = ({ item, clicked, setClicked, username }) => {
   }, [clicked]);
 
   useEffect(() => {
-    console.log(prices.midgrade);
+    console.log(prices);
   }, [prices]);
 
   return (
@@ -89,221 +86,82 @@ const List = ({ item, clicked, setClicked, username }) => {
       <p className="list-name">{name}</p>
       <p className="list-address">{vicinity}</p>
       <div className="list-prices">
-        <table>
-          <tr>
-            <th></th>
-            <th>Regular</th>
-            <th>Midgrade</th>
-            <th>Premium</th>
-            <th>Diesel</th>
-          </tr>
-          <tr>
-            <th>Cash</th>
-            {/* <td>
-                <div>$4.50</div>
-  
-                <p>Updated by someone</p>
-                <p>2 hours ago</p>
-              </td> */}
-            <td
-              onClick={() => {
-                setShowUpdatePopup(true);
-                setPriceToUpdate({
-                  price: prices.regular.cash.price,
-                  type: "regular",
-                  method: "cash",
-                  placeId: place_id,
-                });
-              }}
-            >
-              <div>
-                $
-                {prices.regular && prices.regular.cash
-                  ? prices.regular.cash.price
-                  : "--"}
-              </div>
-              {prices.regular && prices.regular.cash && (
-                <>
-                  <p>Updated by {prices.regular.cash.updatedBy}</p>
-                  <p>{prices.regular.cash.updateTime}</p>
-                </>
-              )}
-            </td>
-            <td
-              onClick={() => {
-                setShowUpdatePopup(true);
-                setPriceToUpdate({
-                  price: prices.midgrade.cash.price,
-                  type: "midgrade",
-                  method: "cash",
-                  placeId: place_id,
-                });
-              }}
-            >
-              <div>
-                $
-                {prices.midgrade && prices.midgrade.cash
-                  ? prices.midgrade.cash.price
-                  : "--"}
-              </div>
-              {prices.midgrade && prices.midgrade.cash && (
-                <>
-                  <p>Updated by {prices.midgrade.cash.updatedBy}</p>
-                  <p>{prices.midgrade.cash.updateTime}</p>
-                </>
-              )}
-            </td>
-            <td
-              onClick={() => {
-                setShowUpdatePopup(true);
-                setPriceToUpdate({
-                  price: prices.premium.cash.price,
-                  type: "premium",
-                  method: "cash",
-                  placeId: place_id,
-                });
-              }}
-            >
-              <div>
-                $
-                {prices.premium && prices.premium.cash
-                  ? prices.premium.cash.price
-                  : "--"}
-              </div>
-              {prices.premium && prices.premium.cash && (
-                <>
-                  <p>Updated by {prices.premium.cash.updatedBy}</p>
-                  <p>{prices.premium.cash.updateTime}</p>
-                </>
-              )}
-            </td>
-            <td
-              onClick={() => {
-                setShowUpdatePopup(true);
-                setPriceToUpdate({
-                  price: prices.diesel.cash.price,
-                  type: "diesel",
-                  method: "cash",
-                  placeId: place_id,
-                });
-              }}
-            >
-              <div>
-                $
-                {prices.diesel && prices.diesel.cash
-                  ? prices.diesel.cash.price
-                  : "--"}
-              </div>
-              {prices.diesel && prices.diesel.cash && (
-                <>
-                  <p>Updated by {prices.diesel.cash.updatedBy}</p>
-                  <p>{prices.diesel.cash.updateTime}</p>
-                </>
-              )}
-            </td>
-          </tr>
-          <tr>
-            <th>Credit</th>
-            <td
-              onClick={() => {
-                setShowUpdatePopup(true);
-                setPriceToUpdate({
-                  price: prices.regular.credit.price,
-                  type: "regular",
-                  method: "credit",
-                  placeId: place_id,
-                });
-              }}
-            >
-              <div>
-                $
-                {prices.regular && prices.regular.credit
-                  ? prices.regular.credit.price
-                  : "--"}
-              </div>
-              {prices.regular && prices.regular.credit && (
-                <>
-                  <p>Updated by {prices.regular.credit.updatedBy}</p>
-                  <p>{prices.regular.credit.updateTime}</p>
-                </>
-              )}
-            </td>
-            <td
-              onClick={() => {
-                setShowUpdatePopup(true);
-                setPriceToUpdate({
-                  price: prices.midgrade.credit.price,
-                  type: "midgrade",
-                  method: "credit",
-                  placeId: place_id,
-                });
-              }}
-            >
-              <div>
-                $
-                {prices.midgrade && prices.midgrade.credit
-                  ? prices.midgrade.credit.price
-                  : "--"}
-              </div>
-              {prices.midgrade && prices.midgrade.credit && (
-                <>
-                  <p>Updated by {prices.midgrade.credit.updatedBy}</p>
-                  <p>{prices.midgrade.credit.updateTime}</p>
-                </>
-              )}
-            </td>
-            <td
-              onClick={() => {
-                setShowUpdatePopup(true);
-                setPriceToUpdate({
-                  price: prices.premium.credit.price,
-                  type: "premium",
-                  method: "credit",
-                  placeId: place_id,
-                });
-              }}
-            >
-              <div>
-                $
-                {prices.premium && prices.premium.credit
-                  ? prices.premium.credit.price
-                  : "--"}
-              </div>
-              {prices.premium && prices.premium.credit && (
-                <>
-                  <p>Updated by {prices.premium.credit.updatedBy}</p>
-                  <p>{prices.premium.credit.updateTime}</p>
-                </>
-              )}
-            </td>
-            <td
-              onClick={() => {
-                setShowUpdatePopup(true);
-                setPriceToUpdate({
-                  price: prices.diesel.credit.price,
-                  type: "diesel",
-                  method: "credit",
-                  placeId: place_id,
-                });
-              }}
-            >
-              <div>
-                $
-                {prices.diesel && prices.diesel.credit
-                  ? prices.diesel.credit.price
-                  : "--"}
-              </div>
-              {prices.diesel && prices.diesel.credit && (
-                <>
-                  <p>Updated by {prices.diesel.credit.updatedBy}</p>
-                  <p>{prices.diesel.credit.updateTime}</p>
-                </>
-              )}
-            </td>
-          </tr>
-        </table>
+        <div></div>
+        <div className="gas-type">Regular</div>
+        <div className="gas-type">Midgrade</div>
+        <div className="gas-type">Premium</div>
+        <div className="gas-type">Diesel</div>
+        <div className="gas-method">Cash</div>
+        {typeArr.map((type) => {
+          return (
+            <PriceByType
+              type={type}
+              method="cash"
+              setShowUpdatePopup={setShowUpdatePopup}
+              setPriceToUpdate={setPriceToUpdate}
+              prices={prices}
+              place_id={place_id}
+              key={`cash-${type}`}
+            />
+          );
+        })}
+        <div className="gas-method">Credit</div>
+        {typeArr.map((type) => {
+          return (
+            <PriceByType
+              type={type}
+              method="credit"
+              setShowUpdatePopup={setShowUpdatePopup}
+              setPriceToUpdate={setPriceToUpdate}
+              prices={prices}
+              place_id={place_id}
+              key={`credit-${type}`}
+            />
+          );
+        })}
       </div>
       <hr />
+    </div>
+  );
+};
+
+const PriceByType = ({
+  type,
+  method,
+  setShowUpdatePopup,
+  setPriceToUpdate,
+  prices,
+  place_id,
+}) => {
+  return (
+    <div
+      className="gas-price-div"
+      onClick={() => {
+        setShowUpdatePopup(true);
+        setPriceToUpdate({
+          price: prices[type][method]["price"],
+          type,
+          method,
+          placeId: place_id,
+        });
+      }}
+    >
+      <div className="gas-price">${prices[type][method]["price"]}</div>
+      {prices[type][method]["updatedBy"] !== "" && (
+        <>
+          <p className="update-by">
+            Updated by {prices[type][method]["updatedBy"]}
+          </p>
+          <p className="update-time">
+            {
+              <ReactTimeAgo
+                date={prices[type][method]["updateTime"]}
+                locale="en-US"
+              />
+            }
+          </p>
+        </>
+      )}
     </div>
   );
 };
