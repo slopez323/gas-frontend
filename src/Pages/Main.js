@@ -37,7 +37,7 @@ const Main = () => {
           <img src={logo} alt="logo" />
           <span>{username}</span>
         </div>
-        <Outlet context={userId} />
+        <Outlet context={[userId, username]} />
       </div>
     </div>
   );
