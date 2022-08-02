@@ -89,7 +89,6 @@ code {
 .dash{
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-
   align-items: center;
 }
 
@@ -102,4 +101,57 @@ code {
 
 .card-label{
   text-align: center;
+}
+
+.map-container{
+  display: grid;
+  grid-template-columns: 1fr 300px;
+}
+
+#list{
+  overflow-y: auto;
+  padding: 10px;
+  font-size: .8rem;
+}
+
+.list-item{
+  cursor: pointer;
+}
+
+.selected{
+  background-color: rebeccapurple;
+}
+
+.list-prices{
+  padding: 0 15px 0 10px;
+  /* display: grid;
+  grid-template-columns: 30px repeat(4, 1fr); */
+}
+
+.price-label{
+  font-size: .5rem;
+}
+
+.price{
+  border: 1px solid black;
+  display: grid;
+  justify-items: center;
+}
+
+th, td{
+  padding: 5px;
+}
+
+td{
+  border: 1px solid black;
+  text-align: center;
+}
+
+td div{
+  margin: 5px 0;
+}
+
+td p{
+  font-size: 6px;
+  margin: 0;
 }
