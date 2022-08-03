@@ -33,7 +33,7 @@ const UserRegistration = () => {
 
   const registerUser = async () => {
     const user = { username, password };
-    const url = `${process.env.REACT_APP_URL_ENDPOINT}/register`;
+    const url = `${process.env.REACT_APP_URL_ENDPOINT}/users/register`;
     const response = await fetch(url, {
       method: "POST",
       headers: {

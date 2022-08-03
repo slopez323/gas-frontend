@@ -1,6 +1,12 @@
 import { useState } from "react";
 
-const PriceUpdate = ({ priceToUpdate, updatePrice, setShowUpdatePopup }) => {
+const PriceUpdate = ({
+  priceToUpdate,
+  updatePrice,
+  name,
+  vicinity,
+  setShowUpdatePopup,
+}) => {
   const { type, method, placeId } = priceToUpdate;
   const price = priceToUpdate.price === "--" ? "0.00" : priceToUpdate.price;
   const priceArr = price.length === 4 ? [...price] : ["0", ...price];
@@ -39,7 +45,14 @@ const PriceUpdate = ({ priceToUpdate, updatePrice, setShowUpdatePopup }) => {
               newPrice[0] === "0"
                 ? newPrice.join("").substring(1)
                 : newPrice.join("");
-            await updatePrice(finalPrice, type, method, placeId);
+            await updatePrice(
+              finalPrice,
+              type,
+              method,
+              placeId,
+              name,
+              vicinity
+            );
             setShowUpdatePopup(false);
           }}
         >

@@ -3,7 +3,19 @@ import { useOutletContext } from "react-router-dom";
 import List from "./List";
 
 const MapPage = () => {
-  const [, username] = useOutletContext();
+  const [
+    userId,
+    username,
+    favorites,
+    setUpdateUserData,
+    addToFav,
+    removeFav,
+    updatePrice,
+    priceReload,
+    fetchPrices,
+    priceToUpdate,
+    setPriceToUpdate,
+  ] = useOutletContext();
   const [listInfo, setListInfo] = useState([]);
   const [clicked, setClicked] = useState();
   const mainHeight = window.innerHeight - 100;
@@ -23,6 +35,15 @@ const MapPage = () => {
               clicked={clicked}
               setClicked={setClicked}
               username={username}
+              favorites={favorites}
+              setUpdateUserData={setUpdateUserData}
+              addToFav={addToFav}
+              removeFav={removeFav}
+              updatePrice={updatePrice}
+              priceReload={priceReload}
+              fetchPrices={fetchPrices}
+              priceToUpdate={priceToUpdate}
+              setPriceToUpdate={setPriceToUpdate}
               key={item.place_id}
             />
           );

@@ -9,7 +9,7 @@ const UserLogin = () => {
 
   const loginUser = async () => {
     const user = { username, password };
-    const url = `${process.env.REACT_APP_URL_ENDPOINT}/login`;
+    const url = `${process.env.REACT_APP_URL_ENDPOINT}/users/login`;
     const response = await fetch(url, {
       method: "POST",
       headers: {
