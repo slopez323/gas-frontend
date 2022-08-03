@@ -50,7 +50,7 @@ const FavItem = ({
   priceToUpdate,
   setPriceToUpdate,
 }) => {
-  const { placeId, name, address } = item;
+  const { placeId, placeName, placeAddress } = item;
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
   const [prices, setPrices] = useState(JSON.parse(JSON.stringify(GAS_TYPES)));
 
@@ -68,19 +68,19 @@ const FavItem = ({
         <PriceUpdate
           priceToUpdate={priceToUpdate}
           updatePrice={updatePrice}
-          name={name}
-          vicinity={address}
+          name={placeName}
+          vicinity={placeAddress}
           setShowUpdatePopup={setShowUpdatePopup}
         />
       )}
       <div className="fav-item-title">
         <div>
-          <p className="fav-name">{name}</p>
-          <p className="fav-address">{address}</p>
+          <p className="fav-name">{placeName}</p>
+          <p className="fav-address">{placeAddress}</p>
         </div>
         <div className="fav-star-div">
           <FontAwesomeIcon
-            onClick={() => removeFav(placeId, name, address)}
+            onClick={() => removeFav(placeId, placeName, placeAddress)}
             icon={faStarSolid}
             style={{ color: "#ffbd00" }}
           />

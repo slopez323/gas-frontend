@@ -112,6 +112,7 @@ const Main = () => {
             fetchPrices,
             priceToUpdate,
             setPriceToUpdate,
+            userLog,
           ]}
         />
       </div>
