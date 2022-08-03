@@ -46,6 +46,9 @@ const UserRegistration = () => {
     if (responseJSON.success) {
       localStorage.setItem("gasUser", JSON.stringify({ id, token }));
       navigate("/main");
+    } else {
+      setErrorMsg(responseJSON.message);
+      setShowError(true);
     }
   };
 

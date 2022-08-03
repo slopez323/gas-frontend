@@ -20,6 +20,7 @@ const List = ({
   fetchPrices,
   priceToUpdate,
   setPriceToUpdate,
+  setIsLoading,
 }) => {
   const { place_id, name, vicinity } = item;
   const [prices, setPrices] = useState(JSON.parse(JSON.stringify(GAS_TYPES)));
@@ -28,6 +29,10 @@ const List = ({
   const [isFav, setIsFav] = useState(false);
   const selected = place_id === clicked ? "selected" : "";
   const divRef = useRef(place_id);
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => {
     const runFetch = async () => {

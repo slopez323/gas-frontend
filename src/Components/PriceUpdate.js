@@ -15,8 +15,8 @@ const PriceUpdate = ({
   );
 
   return (
-    <div className="update-popup-container">
-      <div className="update-popup">
+    <div className="popup-container">
+      <div className="popup update-popup">
         <div className="price-input">
           $
           {priceArr.map((x, i) => {

@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 const UserLogin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [showError, setShowError] = useState(false);
 
   const navigate = useNavigate();
 
@@ -22,6 +24,9 @@ const UserLogin = () => {
     if (responseJSON.success) {
       localStorage.setItem("gasUser", JSON.stringify({ id, token }));
       navigate("/main");
+    } else {
+      setErrorMsg(responseJSON.message);
+      setShowError(true);
     }
   };
 
@@ -43,6 +48,7 @@ const UserLogin = () => {
       >
         Log In
       </button>
+      {showError && <p>{errorMsg}</p>}
     </>
   );
 };

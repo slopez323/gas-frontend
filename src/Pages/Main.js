@@ -1,6 +1,10 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faGasPump } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import logo from "../Assets/gblogo.png";
 import { Outlet, useNavigate } from "react-router-dom";
+import Menu from "../Components/Menu";
+import ConfirmPopup from "../Components/ConfirmPopup";
 
 const Main = () => {
   const [userId, setUserId] = useState();
@@ -10,14 +14,14 @@ const Main = () => {
   const [userLog, setUserLog] = useState([]);
   const [updateUserData, setUpdateUserData] = useState();
   const [priceReload, setPriceReload] = useState();
+  const [showMenu, setShowMenu] = useState("hide");
+  const [showConfirmPopup, setShowConfirmPopup] = useState(false);
   const navigate = useNavigate();
 
   const fetchPrices = async (placeId) => {
     const url = `${process.env.REACT_APP_URL_ENDPOINT}/stations/station/${placeId}`;
     const response = await fetch(url);
     const responseJSON = await response.json();
-    // if (responseJSON.success && !responseJSON.no_prices)
-    //   setPrices(responseJSON.message);
     return responseJSON;
   };
 
@@ -96,9 +100,27 @@ const Main = () => {
     <div>
       <div className="user-view">
         <div className="header">
+          <FontAwesomeIcon
+            icon={faBars}
+            onClick={() =>
+              showMenu === "hide" ? setShowMenu("show") : setShowMenu("hide")
+            }
+          />
+          {/* <FontAwesomeIcon icon={faGasPump} /> */}
           <img src={logo} alt="logo" />
           <span>{username}</span>
         </div>
+        <Menu
+          showMenu={showMenu}
+          setShowMenu={setShowMenu}
+          setShowConfirmPopup={setShowConfirmPopup}
+        />
+        {showConfirmPopup && (
+          <ConfirmPopup
+            setShowConfirmPopup={setShowConfirmPopup}
+            userId={userId}
+          />
+        )}
         <Outlet
           context={[
             userId,

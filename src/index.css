@@ -72,16 +72,22 @@ code {
 
   display: grid;
   grid-template-columns: auto 1fr auto;
+  align-items: center;
+  justify-items: center;
 }
 
 .header img{
   height: 90px;
 }
 
+.header svg{
+  margin-left: 30px;
+  font-size: 2rem;
+}
+
 .header span{
   grid-column: 3;
   margin: 20px;
-  cursor: pointer;
   font-family: 'Catamaran', sans-serif;
   font-size: 1.3rem;
 }
@@ -169,7 +175,42 @@ code {
   font-size: 1.1rem;
 }
 
-.update-popup-container{
+
+.menu-container{
+  background-color: white;
+  width: 200px;
+  height: 500px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  transition: transform .3s
+              cubic-bezier(0, .52, 0, 1);
+  overflow: scroll;
+  z-index: 1000;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.menu-container.hide{
+  transform: translate3d(-250px, 80px, 0);
+}
+
+.menu-container.show{
+  transform: translate3d(70px, 80px, 0);
+  overflow: hidden;
+}
+
+.menu-container p{
+  cursor: pointer;
+}
+
+.popup-container{
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -178,7 +219,7 @@ code {
   background-color: rgba(255, 255, 255, 0.406);
 }
 
-.update-popup{
+.popup{
   width: 200px;
   height: 200px;
   background-color: white;
@@ -194,6 +235,17 @@ code {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 10px;
+}
+
+.confirm-popup{
+  width: 400px;
+  height: max-content;
+  text-align: center;
+}
+
+.confirm-buttons{
+  display: flex;
   gap: 10px;
 }
 
@@ -214,6 +266,7 @@ code {
 }
 
 .fav-item-title{
+  padding: 0 15px;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;

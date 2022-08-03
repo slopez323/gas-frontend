@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
+import Loading from "./Loading";
 import List from "./List";
 
 const MapPage = () => {
@@ -18,14 +19,17 @@ const MapPage = () => {
   ] = useOutletContext();
   const [listInfo, setListInfo] = useState([]);
   const [clicked, setClicked] = useState();
+  const [isLoading, setIsLoading] = useState(true);
   const mainHeight = window.innerHeight - 100;
 
   return (
     <div className="main map-container">
+      {isLoading && <Loading />}
       {/* <Map
         setListInfo={setListInfo}
         clicked={clicked}
         setClicked={setClicked}
+        setIsLoading={setIsLoading}
       /> */}
       <div id="list" style={{ maxHeight: mainHeight }}>
         {listInfo.map((item) => {
@@ -44,6 +48,7 @@ const MapPage = () => {
               fetchPrices={fetchPrices}
               priceToUpdate={priceToUpdate}
               setPriceToUpdate={setPriceToUpdate}
+              setIsLoading={setIsLoading}
               key={item.place_id}
             />
           );
@@ -53,7 +58,7 @@ const MapPage = () => {
   );
 };
 
-const Map = ({ setListInfo, clicked, setClicked }) => {
+const Map = ({ setListInfo, clicked, setClicked, setIsLoading }) => {
   const ref = useRef();
   const [map, setMap] = useState();
   const [markers, setMarkers] = useState([]);
