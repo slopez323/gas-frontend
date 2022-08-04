@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 const Menu = ({ showMenu, setShowMenu, setShowConfirmPopup }) => {
   const navigate = useNavigate();
   const logOut = () => {
-    localStorage.removeItem("gasUser");
+    localStorage.removeItem(process.env.REACT_APP_TOKEN_HEADER_KEY);
     navigate("/");
   };
 

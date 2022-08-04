@@ -9,7 +9,7 @@ const ConfirmPopup = ({ setShowConfirmPopup, userId }) => {
       method: "DELETE",
     });
     const responseJSON = await response.json();
-    localStorage.removeItem("gasUser");
+    localStorage.removeItem(process.env.REACT_APP_TOKEN_HEADER_KEY);
     navigate("/");
   };
 

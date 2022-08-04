@@ -20,9 +20,11 @@ const UserLogin = () => {
       body: JSON.stringify(user),
     });
     const responseJSON = await response.json();
-    const { id, token } = responseJSON;
     if (responseJSON.success) {
-      localStorage.setItem("gasUser", JSON.stringify({ id, token }));
+      localStorage.setItem(
+        process.env.REACT_APP_TOKEN_HEADER_KEY,
+        JSON.stringify(responseJSON.token)
+      );
       navigate("/main");
     } else {
       setErrorMsg(responseJSON.message);
@@ -42,13 +44,14 @@ const UserLogin = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button
+        className="login-submit-btn"
         onClick={() => {
           loginUser();
         }}
       >
         Log In
       </button>
-      {showError && <p>{errorMsg}</p>}
+      {showError && <p className="login-error">{errorMsg}</p>}
     </>
   );
 };

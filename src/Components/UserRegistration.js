@@ -12,8 +12,12 @@ const UserRegistration = () => {
   const navigate = useNavigate();
 
   const checkDetails = () => {
+    if (username.length < 5) {
+      setErrorMsg("Username must be at least 5 characters long.");
+      return;
+    }
     if (password !== confirm) {
-      setErrorMsg("Passwords do not match");
+      setErrorMsg("Passwords do not match.");
       return;
     }
     if (
@@ -42,9 +46,11 @@ const UserRegistration = () => {
       body: JSON.stringify(user),
     });
     const responseJSON = await response.json();
-    const { id, token } = responseJSON;
     if (responseJSON.success) {
-      localStorage.setItem("gasUser", JSON.stringify({ id, token }));
+      localStorage.setItem(
+        process.env.REACT_APP_TOKEN_HEADER_KEY,
+        JSON.stringify(responseJSON.token)
+      );
       navigate("/main");
     } else {
       setErrorMsg(responseJSON.message);
@@ -69,6 +75,7 @@ const UserRegistration = () => {
         onChange={(e) => setConfirm(e.target.value)}
       />
       <button
+        className="login-submit-btn"
         onClick={() => {
           checkDetails();
           if (errorMsg === "") {
@@ -81,7 +88,7 @@ const UserRegistration = () => {
       >
         Create Account
       </button>
-      {showError && <p>{errorMsg}</p>}
+      {showError && <p className="login-error">{errorMsg}</p>}
     </>
   );
 };

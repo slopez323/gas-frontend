@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faGasPump } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import logo from "../Assets/gblogo.png";
+import logo from "../Assets/myG.png";
 import { Outlet, useNavigate } from "react-router-dom";
 import Menu from "../Components/Menu";
 import ConfirmPopup from "../Components/ConfirmPopup";
@@ -76,11 +76,30 @@ const Main = () => {
   };
 
   useEffect(() => {
-    const loggedUser = localStorage.getItem("gasUser");
+    const loggedUser = JSON.parse(
+      localStorage.getItem(process.env.REACT_APP_TOKEN_HEADER_KEY)
+    );
+    const verifyUser = async () => {
+      const url = `${process.env.REACT_APP_URL_ENDPOINT}/users/validate-token`;
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          [process.env.REACT_APP_TOKEN_HEADER_KEY]: loggedUser,
+        },
+      });
+      const responseJSON = await response.json();
+      if (responseJSON.message) {
+        setUserId(responseJSON.message);
+      } else {
+        localStorage.removeItem(process.env.REACT_APP_TOKEN_HEADER_KEY);
+        navigate("/");
+      }
+    };
     if (!loggedUser) {
       navigate("/");
     } else {
-      setUserId(JSON.parse(loggedUser).id);
+      verifyUser();
     }
   }, []);
 

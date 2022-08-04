@@ -1,12 +1,13 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import logo from "../Assets/gblogo.png";
-import { useEffect } from "react";
+import logo from "../Assets/myG-light.png";
+import { useEffect, useState } from "react";
 
 const LoginPage = () => {
+  const [loginOption, setLoginOption] = useState("login");
   const navigate = useNavigate();
 
   useEffect(() => {
-    const user = localStorage.getItem("gasUser");
+    const user = localStorage.getItem(process.env.REACT_APP_TOKEN_HEADER_KEY);
     if (user) {
       navigate("/main");
     }
@@ -17,8 +18,24 @@ const LoginPage = () => {
       <img src={logo} alt="logo" />
       <div className="auth">
         <div className="auth-options">
-          <div onClick={() => navigate("/register")}>Register</div>
-          <div onClick={() => navigate("/")}>Sign In</div>
+          <button
+            className={loginOption === "register" ? "login-select" : ""}
+            onClick={() => {
+              setLoginOption("register");
+              navigate("/register");
+            }}
+          >
+            Register
+          </button>
+          <button
+            className={loginOption === "login" ? "login-select" : ""}
+            onClick={() => {
+              setLoginOption("login");
+              navigate("/");
+            }}
+          >
+            Sign In
+          </button>
         </div>
         <div className="auth-details">
           <Outlet />
