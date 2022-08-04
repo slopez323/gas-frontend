@@ -23,7 +23,11 @@ const Log = () => {
         .map((item) => {
           if (item.activity === "price-update") {
             return (
-              <LogItemPrice item={item} key={`${item.activity}-${item.time}`} />
+              <LogItemPrice
+                item={item}
+                username={username}
+                key={`${item.activity}-${item.time}`}
+              />
             );
           } else if (
             item.activity === "remove-fav" ||
@@ -38,15 +42,35 @@ const Log = () => {
   );
 };
 
-const LogItemPrice = ({ item }) => {
-  const { placeName, placeAddress, price, type, method, time } = item;
+const LogItemPrice = ({ item, username }) => {
+  const { placeId, placeName, placeAddress, price, type, method, time } = item;
 
-  const deletePrice = () => {};
+  const deletePrice = async (username, placeId, price, type, method, time) => {
+    console.log("here");
+    const url = `${process.env.REACT_APP_URL_ENDPOINT}/stations/delete-price`;
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, placeId, price, type, method, time }),
+    });
+    const responseJSON = await response.json();
+  };
 
   return (
     <div className="log-item">
       <span>Activity</span>
-      <span>Price Update</span>
+      <span>
+        Price Update{" "}
+        <button
+          onClick={() =>
+            deletePrice(username, placeId, price, type, method, time)
+          }
+        >
+          Undo Update
+        </button>
+      </span>
 
       <span>Time</span>
       <span>{new Date(time).toLocaleString()}</span>

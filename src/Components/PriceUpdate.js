@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { DeepCopy } from "../Helpers/helpers";
 
 const PriceUpdate = ({
   priceToUpdate,
@@ -28,7 +29,7 @@ const PriceUpdate = ({
                   key={i}
                   value={newPrice[i]}
                   onChange={(e) => {
-                    const priceCopy = JSON.parse(JSON.stringify(newPrice));
+                    const priceCopy = DeepCopy(newPrice);
                     priceCopy[i] = e.target.value;
                     setNewPrice([...priceCopy]);
                   }}

@@ -30,7 +30,7 @@ const PriceByType = ({
           <p className="update-time">
             {
               <ReactTimeAgo
-                date={prices[type][method]["updateTime"]}
+                date={new Date(prices[type][method]["updateTime"])}
                 locale="en-US"
               />
             }

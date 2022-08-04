@@ -125,7 +125,6 @@ const Main = () => {
               showMenu === "hide" ? setShowMenu("show") : setShowMenu("hide")
             }
           />
-          {/* <FontAwesomeIcon icon={faGasPump} /> */}
           <img src={logo} alt="logo" />
           <span>{username}</span>
         </div>

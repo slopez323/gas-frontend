@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import Loading from "./Loading";
 import List from "./List";
+import { DeepCopy, distance, GAS_TYPES } from "../Helpers/helpers";
 
 const MapPage = () => {
   const [
@@ -17,48 +18,89 @@ const MapPage = () => {
     priceToUpdate,
     setPriceToUpdate,
   ] = useOutletContext();
-  const [listInfo, setListInfo] = useState([]);
+  const [listInfo, setListInfo] = useState(
+    JSON.parse(localStorage.getItem("samplelist"))
+  );
+  const [listWPrices, setListWPrices] = useState([]);
+  const [sortType, setSortType] = useState("dist-asc");
+  const [sortedList, setSortedList] = useState([]);
   const [clicked, setClicked] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const mainHeight = window.innerHeight - 100;
+
+  useEffect(() => {
+    const listCopy = DeepCopy(listInfo);
+    const getPrices = async () => {
+      for (let i = 0; i < listCopy.length; i++) {
+        const data = await fetchPrices(listCopy[i].place_id);
+        if (data.success && !data.no_prices) {
+          listCopy[i].prices = data.message;
+        } else {
+          listCopy[i].prices = DeepCopy(GAS_TYPES);
+        }
+      }
+      return;
+    };
+    const setPrices = async () => {
+      await getPrices();
+      setListWPrices(listCopy);
+    };
+    setPrices();
+  }, [listInfo, priceReload]);
+
+  useEffect(() => {
+    const sortCopy = DeepCopy(listWPrices);
+    if (sortType === "dist-desc") {
+      setSortedList(sortCopy.sort((a, b) => b.dist - a.dist));
+      // } else if(sortType === 'price-asc'){
+      //     setSortedList(sortCopy.sort((a, b) => b.dist - a.dist));
+      // } else if (sortType === 'price-desc'){
+    } else setSortedList(sortCopy.sort((a, b) => a.dist - b.dist));
+  }, [listWPrices, sortType]);
 
   return (
     <div className="main map-container">
       {isLoading && <Loading />}
       {/* <Map
-        setListInfo={setListInfo}
         clicked={clicked}
         setClicked={setClicked}
-        setIsLoading={setIsLoading}
+        setListInfo={setListInfo}
       /> */}
       <div id="list" style={{ maxHeight: mainHeight }}>
-        {listInfo.map((item) => {
-          return (
-            <List
-              item={item}
-              clicked={clicked}
-              setClicked={setClicked}
-              username={username}
-              favorites={favorites}
-              setUpdateUserData={setUpdateUserData}
-              addToFav={addToFav}
-              removeFav={removeFav}
-              updatePrice={updatePrice}
-              priceReload={priceReload}
-              fetchPrices={fetchPrices}
-              priceToUpdate={priceToUpdate}
-              setPriceToUpdate={setPriceToUpdate}
-              setIsLoading={setIsLoading}
-              key={item.place_id}
-            />
-          );
-        })}
+        <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
+          <option value="dist-asc">Distance ↑</option>
+          <option value="dist-desc">Distance ↓</option>
+          {/* <option value="price-asc">Price ↑</option>
+          <option value="price-desc">Price ↓</option> */}
+        </select>
+        {sortedList.length > 0 &&
+          sortedList.map((item) => {
+            return (
+              <List
+                item={item}
+                clicked={clicked}
+                setClicked={setClicked}
+                username={username}
+                favorites={favorites}
+                setUpdateUserData={setUpdateUserData}
+                addToFav={addToFav}
+                removeFav={removeFav}
+                updatePrice={updatePrice}
+                priceReload={priceReload}
+                fetchPrices={fetchPrices}
+                priceToUpdate={priceToUpdate}
+                setPriceToUpdate={setPriceToUpdate}
+                setIsLoading={setIsLoading}
+                key={item.place_id}
+              />
+            );
+          })}
       </div>
     </div>
   );
 };
 
-const Map = ({ setListInfo, clicked, setClicked, setIsLoading }) => {
+const Map = ({ clicked, setClicked, setListInfo }) => {
   const ref = useRef();
   const [map, setMap] = useState();
   const [markers, setMarkers] = useState([]);
@@ -82,7 +124,15 @@ const Map = ({ setListInfo, clicked, setClicked, setIsLoading }) => {
   };
 
   const createInfoWindow = (place, marker, infowindow) => {
-    const { place_id, name, vicinity } = place;
+    const { place_id, name, vicinity, geometry } = place;
+
+    const dist = distance(
+      center.lat,
+      center.lng,
+      geometry.location.lat(),
+      geometry.location.lng(),
+      "M"
+    );
 
     window.google.maps.event.addListener(marker, "click", () => {
       const contentString = `<div>${name}</div><div>${vicinity}</div>`;
@@ -94,7 +144,7 @@ const Map = ({ setListInfo, clicked, setClicked, setIsLoading }) => {
       });
       setClicked(place_id);
     });
-    return { place_id, name, vicinity };
+    return { place_id, name, vicinity, dist };
   };
 
   const deleteMarkers = () => {
@@ -112,7 +162,10 @@ const Map = ({ setListInfo, clicked, setClicked, setIsLoading }) => {
             position.coords.latitude,
             position.coords.longitude
           );
-          setCenter(initialLocation);
+          setCenter({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
         },
         () =>
           setCenter({
@@ -148,6 +201,7 @@ const Map = ({ setListInfo, clicked, setClicked, setIsLoading }) => {
       type: "gas_station",
       location: center,
       radius: "10000",
+      rankby: "distance",
     };
     const service = new window.google.maps.places.PlacesService(map);
     service.nearbySearch(request, async function (results, status) {

@@ -22,10 +22,8 @@ const List = ({
   setPriceToUpdate,
   setIsLoading,
 }) => {
-  const { place_id, name, vicinity } = item;
-  const [prices, setPrices] = useState(JSON.parse(JSON.stringify(GAS_TYPES)));
+  const { place_id, name, prices, vicinity, dist } = item;
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
-  //   const [priceToUpdate, setPriceToUpdate] = useState();
   const [isFav, setIsFav] = useState(false);
   const selected = place_id === clicked ? "selected" : "";
   const divRef = useRef(place_id);
@@ -33,14 +31,6 @@ const List = ({
   useEffect(() => {
     setIsLoading(false);
   }, []);
-
-  useEffect(() => {
-    const runFetch = async () => {
-      const data = await fetchPrices(place_id);
-      if (data.success && !data.no_prices) setPrices(data.message);
-    };
-    runFetch();
-  }, [priceReload]);
 
   useEffect(() => {
     if (divRef.current.classList.contains("selected"))
@@ -75,6 +65,9 @@ const List = ({
       </p>
       <p className="list-address" onClick={() => setClicked(place_id)}>
         {vicinity}
+      </p>
+      <p className="list-distance" onClick={() => setClicked(place_id)}>
+        {dist.toFixed(2)} mi
       </p>
       <div className="price-table list-prices">
         <PriceTable

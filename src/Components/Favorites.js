@@ -4,7 +4,7 @@ import PriceTable from "./PriceTable";
 import PriceUpdate from "./PriceUpdate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as faStarSolid } from "@fortawesome/free-solid-svg-icons";
-import { GAS_TYPES } from "../Helpers/helpers";
+import { DeepCopy, GAS_TYPES } from "../Helpers/helpers";
 
 const Favorites = () => {
   const [
@@ -52,7 +52,7 @@ const FavItem = ({
 }) => {
   const { placeId, placeName, placeAddress } = item;
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
-  const [prices, setPrices] = useState(JSON.parse(JSON.stringify(GAS_TYPES)));
+  const [prices, setPrices] = useState(DeepCopy(GAS_TYPES));
 
   useEffect(() => {
     const runFetch = async () => {
