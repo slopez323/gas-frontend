@@ -67,7 +67,7 @@ const List = ({
         {vicinity}
       </p>
       <p className="list-distance" onClick={() => setClicked(place_id)}>
-        {dist.toFixed(2)} mi
+        {dist} mi
       </p>
       <div className="price-table list-prices">
         <PriceTable

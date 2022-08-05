@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGasPump, faStar, faList } from "@fortawesome/free-solid-svg-icons";
 
 const Menu = ({ showMenu, setShowMenu, setShowConfirmPopup }) => {
   const navigate = useNavigate();
@@ -9,14 +11,16 @@ const Menu = ({ showMenu, setShowMenu, setShowConfirmPopup }) => {
 
   return (
     <div className={`menu-container ${showMenu}`}>
-      <div>
+      <div className="menu-options">
         <p
           onClick={() => {
             navigate("/main/map");
             setShowMenu("hide");
           }}
         >
-          Gas Stations
+          {" "}
+          <FontAwesomeIcon icon={faGasPump} />
+          gas stations
         </p>
         <p
           onClick={() => {
@@ -24,7 +28,9 @@ const Menu = ({ showMenu, setShowMenu, setShowConfirmPopup }) => {
             setShowMenu("hide");
           }}
         >
-          Favorites
+          {" "}
+          <FontAwesomeIcon icon={faStar} />
+          favorites
         </p>
         <p
           onClick={() => {
@@ -32,12 +38,15 @@ const Menu = ({ showMenu, setShowMenu, setShowConfirmPopup }) => {
             setShowMenu("hide");
           }}
         >
-          Activity Log
+          {" "}
+          <FontAwesomeIcon icon={faList} />
+          activity log
         </p>
       </div>
-      <div>
+      <div className="account-options">
         <p onClick={() => logOut()}>Log Out</p>
         <p
+          style={{ color: "#9d0208" }}
           onClick={() => {
             setShowConfirmPopup(true);
             setShowMenu("hide");

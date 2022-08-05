@@ -1,6 +1,6 @@
 const GAS_PAYMENT = {
-  cash: { price: "--", updatedBy: "", updateTime: "" },
-  credit: { price: "--", updatedBy: "", updateTime: "" },
+  cash: [{ price: "--", updatedBy: "", updateTime: "" }],
+  credit: [{ price: "--", updatedBy: "", updateTime: "" }],
 };
 
 export const GAS_TYPES = {

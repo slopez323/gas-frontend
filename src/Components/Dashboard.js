@@ -1,21 +1,35 @@
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGasPump, faStar, faList } from "@fortawesome/free-solid-svg-icons";
 
 const Dashboard = () => {
   const navigate = useNavigate();
 
   return (
     <div className="main dash">
-      <div className="dash-option" onClick={() => navigate("/main/map")}>
-        <div className="card"></div>
-        <p className="card-label">Gas Stations</p>
+      <div
+        style={{ backgroundColor: "#e07a5f" }}
+        className="dash-option"
+        onClick={() => navigate("/main/map")}
+      >
+        <p className="card-label">gas stations</p>
+        <FontAwesomeIcon icon={faGasPump} />
       </div>
-      <div className="dash-option" onClick={() => navigate("/main/fav")}>
-        <div className="card"></div>
-        <p className="card-label">Favorites</p>
+      <div
+        style={{ backgroundColor: "#3d405b" }}
+        className="dash-option"
+        onClick={() => navigate("/main/fav")}
+      >
+        <p className="card-label">favorites</p>
+        <FontAwesomeIcon icon={faStar} />
       </div>
-      <div className="dash-option" onClick={() => navigate("/main/log")}>
-        <div className="card"></div>
-        <p className="card-label">Activity Log</p>
+      <div
+        style={{ backgroundColor: "#81b29a" }}
+        className="dash-option"
+        onClick={() => navigate("/main/log")}
+      >
+        <p className="card-label">activity log</p>
+        <FontAwesomeIcon icon={faList} />
       </div>
     </div>
   );

@@ -1,7 +1,11 @@
+import gif from "../Assets/gas-load.gif";
+
 const Loading = () => {
   return (
-    <div className="spinner-container">
-      <div className="loading-spinner"></div>
+    <div className="loading-container">
+      <div className="">
+        <img src={gif} />
+      </div>
     </div>
   );
 };

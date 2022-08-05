@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faGasPump } from "@fortawesome/free-solid-svg-icons";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import logo from "../Assets/myG.png";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -121,11 +121,12 @@ const Main = () => {
         <div className="header">
           <FontAwesomeIcon
             icon={faBars}
+            className={showMenu === "show" ? "show" : ""}
             onClick={() =>
               showMenu === "hide" ? setShowMenu("show") : setShowMenu("hide")
             }
           />
-          <img src={logo} alt="logo" />
+          <img src={logo} alt="logo" onClick={() => navigate("/main")} />
           <span>{username}</span>
         </div>
         <Menu

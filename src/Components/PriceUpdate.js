@@ -9,8 +9,8 @@ const PriceUpdate = ({
   setShowUpdatePopup,
 }) => {
   const { type, method, placeId } = priceToUpdate;
-  const price = priceToUpdate.price === "--" ? "0.00" : priceToUpdate.price;
-  const priceArr = price.length === 4 ? [...price] : ["0", ...price];
+  const price = priceToUpdate.price === "--" ? "00.00" : priceToUpdate.price;
+  const priceArr = price.length === 4 ? ["0", ...price] : [...price];
   const [newPrice, setNewPrice] = useState(
     JSON.parse(JSON.stringify(priceArr))
   );
@@ -25,6 +25,7 @@ const PriceUpdate = ({
               return (
                 <input
                   type="number"
+                  min="0"
                   max="9"
                   key={i}
                   value={newPrice[i]}
@@ -46,15 +47,17 @@ const PriceUpdate = ({
               newPrice[0] === "0"
                 ? newPrice.join("").substring(1)
                 : newPrice.join("");
-            await updatePrice(
-              finalPrice,
-              type,
-              method,
-              placeId,
-              name,
-              vicinity
-            );
-            setShowUpdatePopup(false);
+            if (finalPrice.split(".")[1].length === 2) {
+              await updatePrice(
+                finalPrice,
+                type,
+                method,
+                placeId,
+                name,
+                vicinity
+              );
+              setShowUpdatePopup(false);
+            }
           }}
         >
           Submit Price

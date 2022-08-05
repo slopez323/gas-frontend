@@ -26,9 +26,10 @@ const MapPage = () => {
   const [sortedList, setSortedList] = useState([]);
   const [clicked, setClicked] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const mainHeight = window.innerHeight - 100;
+  const mainHeight = window.innerHeight - 140;
 
   useEffect(() => {
+    debugger;
     const listCopy = DeepCopy(listInfo);
     const getPrices = async () => {
       for (let i = 0; i < listCopy.length; i++) {
@@ -49,6 +50,7 @@ const MapPage = () => {
   }, [listInfo, priceReload]);
 
   useEffect(() => {
+    debugger;
     const sortCopy = DeepCopy(listWPrices);
     if (sortType === "dist-desc") {
       setSortedList(sortCopy.sort((a, b) => b.dist - a.dist));
@@ -61,18 +63,23 @@ const MapPage = () => {
   return (
     <div className="main map-container">
       {isLoading && <Loading />}
-      {/* <Map
+      <Map
         clicked={clicked}
         setClicked={setClicked}
         setListInfo={setListInfo}
-      /> */}
+      />
       <div id="list" style={{ maxHeight: mainHeight }}>
-        <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
-          <option value="dist-asc">Distance ↑</option>
-          <option value="dist-desc">Distance ↓</option>
-          {/* <option value="price-asc">Price ↑</option>
+        {!isLoading && (
+          <select
+            value={sortType}
+            onChange={(e) => setSortType(e.target.value)}
+          >
+            <option value="dist-asc">Distance ↑</option>
+            <option value="dist-desc">Distance ↓</option>
+            {/* <option value="price-asc">Price ↑</option>
           <option value="price-desc">Price ↓</option> */}
-        </select>
+          </select>
+        )}
         {sortedList.length > 0 &&
           sortedList.map((item) => {
             return (
@@ -104,7 +111,6 @@ const Map = ({ clicked, setClicked, setListInfo }) => {
   const ref = useRef();
   const [map, setMap] = useState();
   const [markers, setMarkers] = useState([]);
-  //   const [listInfo, setListInfo] = useState([]);
   const [zoom, setZoom] = useState(12);
   const [center, setCenter] = useState();
 
@@ -155,6 +161,7 @@ const Map = ({ clicked, setClicked, setListInfo }) => {
   };
 
   useEffect(() => {
+    debugger;
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -181,12 +188,14 @@ const Map = ({ clicked, setClicked, setListInfo }) => {
   }, []);
 
   useEffect(() => {
+    debugger;
     if (ref.current && !map && center) {
       setMap(new window.google.maps.Map(ref.current, { center, zoom }));
     }
   }, [ref, map, center]);
 
   useEffect(() => {
+    debugger;
     if (map) {
       window.google.maps.event.clearListeners(map, "idle");
 
@@ -195,13 +204,13 @@ const Map = ({ clicked, setClicked, setListInfo }) => {
   }, [map]);
 
   useEffect(() => {
+    debugger;
     deleteMarkers();
 
     const request = {
       type: "gas_station",
       location: center,
       radius: "10000",
-      rankby: "distance",
     };
     const service = new window.google.maps.places.PlacesService(map);
     service.nearbySearch(request, async function (results, status) {
@@ -232,6 +241,7 @@ const Map = ({ clicked, setClicked, setListInfo }) => {
   }, [center]);
 
   useEffect(() => {
+    debugger;
     const selected = markers.find((marker) => marker.title === clicked);
     if (selected) window.google.maps.event.trigger(selected, "click");
   }, [clicked]);
