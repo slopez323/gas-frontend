@@ -10,6 +10,23 @@ export const GAS_TYPES = {
   diesel: GAS_PAYMENT,
 };
 
+export const blankPrice = ["", "", ".", "", ""];
+
+export const numKeys = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "",
+  "0",
+  "←",
+];
+
 export const DeepCopy = (obj) => {
   return JSON.parse(JSON.stringify(obj));
 };

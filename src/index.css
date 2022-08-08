@@ -470,17 +470,67 @@ button.login-select, .auth-options button:hover {
   gap: 10px;
 }
 
+.update-popup p{
+  margin: 0;
+}
+
+.update-popup button{
+  border: none;
+  outline: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.update-popup button:hover{
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
 .price-input{
   font-size: 2rem;
+  border-bottom: 2px solid #bb3e03;
 
   display: flex;
   gap: 2px;
 }
 
-[type='number']{
+.price-input.input-error{
+  animation: shake .3s;
+}
+
+.number-input{
   width: 35px;
   font-size: 2rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.num-keypad{
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  box-sizing: border-box;
+  background-color: #ced4da;
+  padding: 10px 40px;
+
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 10px;
+}
+
+.num-keys{
+  background-color: #e9ecef;
+  border-radius: 5px;
+  padding: 10px 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 
 select{
 background-color: transparent;
@@ -618,4 +668,13 @@ font-size: .8rem;
     grid-template-rows: repeat(3, 1fr);
     gap: 10px;
   }
+}
+
+@keyframes shake {
+  0% {transform: translate(0, 0);}
+  20% {transform: translate(-4px, 0);}
+  40% {transform: translate(4px, 0);}
+  60% {transform: translate(-4px, 0);}
+  80% {transform: translate(4px, 0);}
+  100% {transform: translate(0, 0);}
 }
