@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 
 const Log = () => {
@@ -15,22 +15,20 @@ const Log = () => {
     priceToUpdate,
     setPriceToUpdate,
     userLog,
+    filterType,
+    setFilterType,
+    sortType,
+    setSortType,
+    numPages,
+    page,
+    setPage,
   ] = useOutletContext();
-  const [filterType, setFilterType] = useState("all");
-  const [sortType, setSortType] = useState("desc");
 
-  const sortList = (x, y) =>
-    sortType === "asc"
-      ? new Date(x.time) - new Date(y.time)
-      : new Date(y.time) - new Date(x.time);
+  const [pageNums, setPageNums] = useState([]);
 
-  const filterList = (x) => {
-    if (filterType === "fav") {
-      return x.activity === "add-fav" || x.activity === "remove-fav";
-    } else if (filterType === "price") {
-      return x.activity === "price-update";
-    } else return x;
-  };
+  useEffect(() => {
+    setPageNums(Array.from({ length: numPages }, (_, i) => i + 1));
+  }, [numPages]);
 
   return (
     <div className="main log-container">
@@ -48,28 +46,41 @@ const Log = () => {
           <option value="asc">Oldest First</option>
         </select>
       </div>
-      {userLog
-        .filter(filterList)
-        .sort(sortList)
-        .map((item) => {
-          if (item.activity === "price-update") {
-            return (
-              <LogItemPrice
-                item={item}
-                username={username}
-                setUpdateUserData={setUpdateUserData}
-                key={`${item.activity}-${item.time}`}
-              />
-            );
-          } else if (
-            item.activity === "remove-fav" ||
-            item.activity === "add-fav"
-          ) {
-            return (
-              <LogItemFav item={item} key={`${item.activity}-${item.time}`} />
-            );
-          } else return <></>;
+      {userLog.map((item) => {
+        if (item.activity === "price-update") {
+          return (
+            <LogItemPrice
+              item={item}
+              username={username}
+              setUpdateUserData={setUpdateUserData}
+              key={`${item.activity}-${item.time}`}
+            />
+          );
+        } else if (
+          item.activity === "remove-fav" ||
+          item.activity === "add-fav"
+        ) {
+          return (
+            <LogItemFav item={item} key={`${item.activity}-${item.time}`} />
+          );
+        } else return <></>;
+      })}
+      <div className="page-div">
+        Page
+        {pageNums.map((i) => {
+          return (
+            <span
+              className={`page-num ${
+                Number(page) === Number(i) ? "current" : ""
+              }`}
+              key={`page-${i}`}
+              onClick={(e) => setPage(e.target.textContent)}
+            >
+              {i}
+            </span>
+          );
         })}
+      </div>
     </div>
   );
 };

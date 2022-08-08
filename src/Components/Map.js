@@ -3,6 +3,8 @@ import { useOutletContext } from "react-router-dom";
 import Loading from "./Loading";
 import List from "./List";
 import { DeepCopy, distance, GAS_TYPES } from "../Helpers/helpers";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocationArrow } from "@fortawesome/free-solid-svg-icons";
 
 const MapPage = () => {
   const [
@@ -18,18 +20,16 @@ const MapPage = () => {
     priceToUpdate,
     setPriceToUpdate,
   ] = useOutletContext();
-  const [listInfo, setListInfo] = useState(
-    JSON.parse(localStorage.getItem("samplelist"))
-  );
+  const [listInfo, setListInfo] = useState([]);
   const [listWPrices, setListWPrices] = useState([]);
   const [sortType, setSortType] = useState("dist-asc");
   const [sortedList, setSortedList] = useState([]);
   const [clicked, setClicked] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [searchedLoc, setSearchedLoc] = useState();
   const mainHeight = window.innerHeight - 140;
 
   useEffect(() => {
-    debugger;
     const listCopy = DeepCopy(listInfo);
     const getPrices = async () => {
       for (let i = 0; i < listCopy.length; i++) {
@@ -50,7 +50,6 @@ const MapPage = () => {
   }, [listInfo, priceReload]);
 
   useEffect(() => {
-    debugger;
     const sortCopy = DeepCopy(listWPrices);
     if (sortType === "dist-desc") {
       setSortedList(sortCopy.sort((a, b) => b.dist - a.dist));
@@ -63,11 +62,15 @@ const MapPage = () => {
   return (
     <div className="main map-container">
       {isLoading && <Loading />}
-      <Map
-        clicked={clicked}
-        setClicked={setClicked}
-        setListInfo={setListInfo}
-      />
+      <div className="map-search-div">
+        {!isLoading && <MapSearch setSearchedLoc={setSearchedLoc} />}
+        <Map
+          clicked={clicked}
+          setClicked={setClicked}
+          setListInfo={setListInfo}
+          searchedLoc={searchedLoc}
+        />
+      </div>
       <div id="list" style={{ maxHeight: mainHeight }}>
         {!isLoading && (
           <select
@@ -107,7 +110,7 @@ const MapPage = () => {
   );
 };
 
-const Map = ({ clicked, setClicked, setListInfo }) => {
+const Map = ({ clicked, setClicked, setListInfo, searchedLoc }) => {
   const ref = useRef();
   const [map, setMap] = useState();
   const [markers, setMarkers] = useState([]);
@@ -161,7 +164,6 @@ const Map = ({ clicked, setClicked, setListInfo }) => {
   };
 
   useEffect(() => {
-    debugger;
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -188,14 +190,12 @@ const Map = ({ clicked, setClicked, setListInfo }) => {
   }, []);
 
   useEffect(() => {
-    debugger;
     if (ref.current && !map && center) {
       setMap(new window.google.maps.Map(ref.current, { center, zoom }));
     }
   }, [ref, map, center]);
 
   useEffect(() => {
-    debugger;
     if (map) {
       window.google.maps.event.clearListeners(map, "idle");
 
@@ -204,7 +204,6 @@ const Map = ({ clicked, setClicked, setListInfo }) => {
   }, [map]);
 
   useEffect(() => {
-    debugger;
     deleteMarkers();
 
     const request = {
@@ -238,15 +237,73 @@ const Map = ({ clicked, setClicked, setListInfo }) => {
         //   map.setCenter(results[0].geometry.location);
       }
     });
-  }, [center]);
+  }, [map, center]);
 
   useEffect(() => {
-    debugger;
     const selected = markers.find((marker) => marker.title === clicked);
     if (selected) window.google.maps.event.trigger(selected, "click");
   }, [clicked]);
 
+  useEffect(() => {
+    if (map && searchedLoc) {
+      setCenter(searchedLoc);
+      map.setCenter(searchedLoc);
+    }
+  }, [searchedLoc]);
+
   return <div ref={ref} id="map" />;
+};
+
+const MapSearch = ({ setSearchedLoc }) => {
+  const autoCompleteRef = useRef();
+  const inputRef = useRef();
+  const options = {
+    componentRestrictions: { country: "us" },
+    fields: ["geometry"],
+  };
+
+  const getCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const initialLocation = new window.google.maps.LatLng(
+            position.coords.latitude,
+            position.coords.longitude
+          );
+          setSearchedLoc(initialLocation);
+        }
+        // () =>
+        //   setCenter({
+        //     lat: 40.8859,
+        //     lng: -74.0435,
+        //   })
+      );
+    }
+  };
+
+  useEffect(() => {
+    autoCompleteRef.current = new window.google.maps.places.Autocomplete(
+      inputRef.current,
+      options
+    );
+    autoCompleteRef.current.addListener("place_changed", async () => {
+      const place = await autoCompleteRef.current.getPlace();
+      console.log(place.geometry.location);
+      setSearchedLoc(place.geometry.location);
+    });
+  }, []);
+
+  return (
+    <div className="search">
+      <input ref={inputRef} />
+      <div className="loc-btn" title="Current Location">
+        <FontAwesomeIcon
+          onClick={() => getCurrentLocation()}
+          icon={faLocationArrow}
+        />
+      </div>
+    </div>
+  );
 };
 
 export default MapPage;

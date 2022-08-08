@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-regular-svg-icons";
 import { faStar as faStarSolid } from "@fortawesome/free-solid-svg-icons";
 import PriceTable from "./PriceTable";
-import { GAS_TYPES } from "../Helpers/helpers";
 
 const List = ({
   item,

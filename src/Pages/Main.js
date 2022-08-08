@@ -103,17 +103,37 @@ const Main = () => {
     }
   }, []);
 
+  const [page, setPage] = useState(1);
+  const [numPages, setNumPages] = useState(1);
+  const [filterType, setFilterType] = useState("all");
+  const [sortType, setSortType] = useState("desc");
+
   useEffect(() => {
     const getUserData = async () => {
-      const url = `${process.env.REACT_APP_URL_ENDPOINT}/users/user/${userId}`;
+      const url = `${process.env.REACT_APP_URL_ENDPOINT}/users/user?id=${userId}&page=${page}&limit=10&filter=${filterType}&sort=${sortType}`;
       const response = await fetch(url);
       const responseJSON = await response.json();
-      setUsername(responseJSON.username);
-      setFavorites(responseJSON.favorites);
-      setUserLog(responseJSON.log);
+
+      setUsername(responseJSON.message.username);
+      setFavorites(responseJSON.message.favorites);
+      setUserLog(responseJSON.message.log);
+      setNumPages(Math.ceil(responseJSON.message.totalLogs / 10));
+      setPage(1);
     };
     if (userId) getUserData();
-  }, [userId, updateUserData]);
+  }, [userId, updateUserData, sortType, filterType, page]);
+
+  // useEffect(() => {
+  //   const getUserData = async () => {
+  //     const url = `${process.env.REACT_APP_URL_ENDPOINT}/users/user/${userId}`;
+  //     const response = await fetch(url);
+  //     const responseJSON = await response.json();
+  //     setUsername(responseJSON.username);
+  //     setFavorites(responseJSON.favorites);
+  //     setUserLog(responseJSON.log);
+  //   };
+  //   if (userId) getUserData();
+  // }, [userId, updateUserData]);
 
   return (
     <div>
@@ -126,7 +146,14 @@ const Main = () => {
               showMenu === "hide" ? setShowMenu("show") : setShowMenu("hide")
             }
           />
-          <img src={logo} alt="logo" onClick={() => navigate("/main")} />
+          <img
+            src={logo}
+            alt="logo"
+            onClick={() => {
+              setShowMenu("hide");
+              navigate("/main");
+            }}
+          />
           <span>{username}</span>
         </div>
         <Menu
@@ -154,6 +181,13 @@ const Main = () => {
             priceToUpdate,
             setPriceToUpdate,
             userLog,
+            filterType,
+            setFilterType,
+            sortType,
+            setSortType,
+            numPages,
+            page,
+            setPage,
           ]}
         />
       </div>
