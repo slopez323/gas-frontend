@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Wrapper } from "@googlemaps/react-wrapper";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en.json";
+import { AuthProvider } from "./Helpers/AuthHook";
 
 TimeAgo.addDefaultLocale(en);
 
@@ -14,7 +15,9 @@ root.render(
   <React.StrictMode>
     <Wrapper apiKey={process.env.REACT_APP_APIKEY} libraries={["places"]}>
       <BrowserRouter>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </BrowserRouter>
     </Wrapper>
   </React.StrictMode>

@@ -3,7 +3,6 @@ import { useOutletContext } from "react-router-dom";
 
 const Log = () => {
   const [
-    userId,
     username,
     favorites,
     setUpdateUserData,
@@ -46,6 +45,7 @@ const Log = () => {
           <option value="asc">Oldest First</option>
         </select>
       </div>
+      {userLog.length === 0 && <p className="empty">No activities.</p>}
       {userLog.map((item) => {
         if (item.activity === "price-update") {
           return (
@@ -65,22 +65,24 @@ const Log = () => {
           );
         } else return <></>;
       })}
-      <div className="page-div">
-        Page
-        {pageNums.map((i) => {
-          return (
-            <span
-              className={`page-num ${
-                Number(page) === Number(i) ? "current" : ""
-              }`}
-              key={`page-${i}`}
-              onClick={(e) => setPage(e.target.textContent)}
-            >
-              {i}
-            </span>
-          );
-        })}
-      </div>
+      {userLog.length !== 0 && (
+        <div className="page-div">
+          Page
+          {pageNums.map((i) => {
+            return (
+              <span
+                className={`page-num ${
+                  Number(page) === Number(i) ? "current" : ""
+                }`}
+                key={`page-${i}`}
+                onClick={(e) => setPage(e.target.textContent)}
+              >
+                {i}
+              </span>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
