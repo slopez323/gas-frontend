@@ -152,12 +152,16 @@ button.login-select, .auth-options button:hover {
   text-align: center;
 }
 
-.user-view{
+.user-view, .admin-view{
   min-height: 100vh;
   background-color: #f0efeb;
 
   display: grid;
   grid-template-rows: auto 1fr;
+}
+
+.admin-view{
+  background-color: #283618;
 }
 
 .header{
@@ -176,6 +180,10 @@ button.login-select, .auth-options button:hover {
   cursor: pointer;
 }
 
+.admin-view .header{
+  grid-template-columns: 1fr;
+}
+
 .fa-bars{
   margin-left: 30px;
   font-size: 2rem;
@@ -188,18 +196,34 @@ button.login-select, .auth-options button:hover {
 .fa-bars:hover{
   color: #bb3e03;
 }
-
+/* 
 .header span{
   grid-column: 3;
   margin: 20px 30px 20px 0;
   font-family: 'Pathway Gothic One', sans-serif;
   font-size: 1.4rem;
   text-transform: uppercase;
-  color: #dc2f02;
-}
+} */
 
 .main{
   padding: 20px;
+}
+
+.admin-btn{
+  margin: 20px 30px 20px 0;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  font-family: 'Pathway Gothic One', sans-serif;
+  font-size: 1.4rem;
+  color: #283618;
+}
+
+.admin-view .admin-btn{
+  color: #f0efeb;
 }
 
 .dash{
@@ -405,6 +429,13 @@ button.login-select, .auth-options button:hover {
   margin: 0;
 }
 
+#menu-username{
+  color: #6d6875;
+  font-weight: 100;
+  text-transform: uppercase;
+  font-size: .8rem;
+}
+
 .menu-options{
   font-family: 'Square Peg', cursive;
   font-size: 1.6rem;
@@ -427,6 +458,12 @@ button.login-select, .auth-options button:hover {
   font-size: 1rem;
 }
 
+.admin-options{
+  color: #2c5777;
+  font-size: .8rem;
+}
+
+
 .account-options{
   font-weight: 700;
 }
@@ -438,6 +475,7 @@ button.login-select, .auth-options button:hover {
   top: 0;
   left: 0;
   background-color: rgba(255, 255, 255, 0.406);
+  z-index: 1;
 }
 
 .popup{
@@ -654,6 +692,13 @@ font-size: .8rem;
 
 .loading-container img{
   height: 5rem;
+}
+
+.empty{
+  display: flex;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #6b705c;
 }
 
 @media (min-width: 768px) {

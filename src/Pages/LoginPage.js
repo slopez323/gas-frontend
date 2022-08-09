@@ -1,17 +1,19 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import logo from "../Assets/myG-light.png";
 import { useEffect, useState } from "react";
+import { useAuth } from "../Helpers/AuthHook";
 
 const LoginPage = () => {
   const [loginOption, setLoginOption] = useState("login");
+
+  const { userId } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const user = localStorage.getItem(process.env.REACT_APP_TOKEN_HEADER_KEY);
-    if (user) {
+    if (userId) {
       navigate("/main");
-    }
-  }, []);
+    } else navigate("/");
+  }, [userId]);
 
   return (
     <div className="login-page">

@@ -8,7 +8,6 @@ import { DeepCopy, GAS_TYPES } from "../Helpers/helpers";
 
 const Favorites = () => {
   const [
-    userId,
     username,
     favorites,
     setUpdateUserData,
@@ -23,6 +22,7 @@ const Favorites = () => {
 
   return (
     <div className="main fav-container">
+      {favorites.length === 0 && <p className="empty">No favorites.</p>}
       {favorites.map((item) => {
         return (
           <FavItem

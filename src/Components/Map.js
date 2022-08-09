@@ -8,7 +8,6 @@ import { faLocationArrow } from "@fortawesome/free-solid-svg-icons";
 
 const MapPage = () => {
   const [
-    userId,
     username,
     favorites,
     setUpdateUserData,

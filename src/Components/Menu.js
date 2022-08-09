@@ -1,16 +1,24 @@
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGasPump, faStar, faList } from "@fortawesome/free-solid-svg-icons";
+import {
+  faGasPump,
+  faStar,
+  faList,
+  faFileShield,
+} from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "../Helpers/AuthHook";
 
-const Menu = ({ showMenu, setShowMenu, setShowConfirmPopup }) => {
+const Menu = ({ showMenu, setShowMenu, setShowConfirmPopup, username }) => {
+  const { logout } = useAuth();
   const navigate = useNavigate();
-  const logOut = () => {
-    localStorage.removeItem(process.env.REACT_APP_TOKEN_HEADER_KEY);
-    navigate("/");
-  };
+  // const logOut = () => {
+  //   localStorage.removeItem(process.env.REACT_APP_TOKEN_HEADER_KEY);
+  //   navigate("/");
+  // };
 
   return (
     <div className={`menu-container ${showMenu}`}>
+      <div id="menu-username">{username}</div>
       <div className="menu-options">
         <p
           onClick={() => {
@@ -43,8 +51,27 @@ const Menu = ({ showMenu, setShowMenu, setShowConfirmPopup }) => {
           activity log
         </p>
       </div>
+      {/* {isAdmin && (
+        <div className="admin-options">
+          <p>
+            {" "}
+            <FontAwesomeIcon icon={faFileShield} /> Admin: User List
+          </p>
+          <p>
+            {" "}
+            <FontAwesomeIcon icon={faFileShield} /> Admin: Station List
+          </p>
+        </div>
+      )} */}
       <div className="account-options">
-        <p onClick={() => logOut()}>Log Out</p>
+        <p
+          onClick={async () => {
+            const logoutResponse = await logout();
+            if (logoutResponse) navigate("/");
+          }}
+        >
+          Log Out
+        </p>
         <p
           style={{ color: "#9d0208" }}
           onClick={() => {
