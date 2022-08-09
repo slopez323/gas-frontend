@@ -1,19 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Helpers/AuthHook";
 
-const ConfirmPopup = ({ setShowConfirmPopup, userId }) => {
-  const { deleteAccount } = useAuth();
+const ConfirmPopup = ({ setShowConfirmPopup }) => {
+  const { userId, deleteAccount } = useAuth();
   const navigate = useNavigate();
-
-  // const deleteAccount = async () => {
-  //   const url = `${process.env.REACT_APP_URL_ENDPOINT}/users/delete-user/${userId}`;
-  //   const response = await fetch(url, {
-  //     method: "DELETE",
-  //   });
-  //   const responseJSON = await response.json();
-  //   localStorage.removeItem(process.env.REACT_APP_TOKEN_HEADER_KEY);
-  //   navigate("/");
-  // };
 
   return (
     <div className="popup-container">

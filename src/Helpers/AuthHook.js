@@ -107,7 +107,7 @@ export const AuthProvider = ({ children }) => {
       method: "DELETE",
     });
     const responseJSON = await response.json();
-    removeUserToken();
+    if (responseJSON.success) removeUserToken();
     setAuthUpdate(response);
     return responseJSON;
   };

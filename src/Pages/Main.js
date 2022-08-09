@@ -83,35 +83,6 @@ const Main = () => {
     setUpdateUserData(response);
   };
 
-  // useEffect(() => {
-  //   const loggedUser = JSON.parse(
-  //     localStorage.getItem(process.env.REACT_APP_TOKEN_HEADER_KEY)
-  //   );
-  //   const verifyUser = async () => {
-  //     const url = `${process.env.REACT_APP_URL_ENDPOINT}/users/validate-token`;
-  //     const response = await fetch(url, {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         [process.env.REACT_APP_TOKEN_HEADER_KEY]: loggedUser,
-  //       },
-  //     });
-  //     const responseJSON = await response.json();
-  //     if (responseJSON.success) {
-  //       setUserId(responseJSON.message);
-  //       setIsAdmin(responseJSON.isAdmin);
-  //     } else {
-  //       localStorage.removeItem(process.env.REACT_APP_TOKEN_HEADER_KEY);
-  //       navigate("/");
-  //     }
-  //   };
-  //   if (!loggedUser) {
-  //     navigate("/");
-  //   } else {
-  //     verifyUser();
-  //   }
-  // }, []);
-
   useEffect(() => {
     if (userId) {
       navigate("/main");
@@ -163,13 +134,9 @@ const Main = () => {
         setShowMenu={setShowMenu}
         setShowConfirmPopup={setShowConfirmPopup}
         username={username}
-        // isAdmin={isAdmin}
       />
       {showConfirmPopup && (
-        <ConfirmPopup
-          setShowConfirmPopup={setShowConfirmPopup}
-          userId={userId}
-        />
+        <ConfirmPopup setShowConfirmPopup={setShowConfirmPopup} />
       )}
       <Outlet
         context={[

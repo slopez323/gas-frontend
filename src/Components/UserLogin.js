@@ -11,30 +11,6 @@ const UserLogin = ({ setServerResponse }) => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  // const loginUser = async () => {
-  //   const user = { username, password };
-  //   const url = `${process.env.REACT_APP_URL_ENDPOINT}/users/login`;
-  //   const response = await fetch(url, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(user),
-  //   });
-  //   const responseJSON = await response.json();
-  //   if (responseJSON.success) {
-  //     localStorage.setItem(
-  //       process.env.REACT_APP_TOKEN_HEADER_KEY,
-  //       JSON.stringify(responseJSON.token)
-  //     );
-  //     navigate("/main");
-  //   } else {
-  //     setErrorMsg(responseJSON.message);
-  //     setShowError(true);
-  //   }
-  //   setServerResponse(response);
-  // };
-
   return (
     <>
       <input

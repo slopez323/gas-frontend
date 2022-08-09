@@ -5,11 +5,6 @@ body {
   font-family: 'Catamaran', sans-serif;
   font-weight: 400;
 }
-/* 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-} */
 
 :root{
   font-size: 16px;
@@ -96,7 +91,8 @@ button.login-select, .auth-options button:hover {
   gap: 5px;
 }
 
-.auth-details input{
+.auth-details input,
+.new-user-popup input{
   border: none;
   outline: none;
   border-bottom: 2px solid #6c757d;
@@ -210,7 +206,7 @@ button.login-select, .auth-options button:hover {
 }
 
 .admin-btn{
-  margin: 20px 30px 20px 0;
+  margin: 20px 30px 10px 0;
   cursor: pointer;
   position: absolute;
   right: 0;
@@ -458,11 +454,6 @@ button.login-select, .auth-options button:hover {
   font-size: 1rem;
 }
 
-.admin-options{
-  color: #2c5777;
-  font-size: .8rem;
-}
-
 
 .account-options{
   font-weight: 700;
@@ -479,8 +470,8 @@ button.login-select, .auth-options button:hover {
 }
 
 .popup{
-  width: 200px;
-  height: 200px;
+  min-width: 200px;
+  min-height: 200px;
   background-color: white;
   position: absolute;
   top: 50%;
@@ -699,6 +690,98 @@ font-size: .8rem;
   justify-content: center;
   font-size: 1.5rem;
   color: #6b705c;
+}
+
+.admin-main{
+  margin: 10px 10px 40px;
+  background-color: #ced4da;
+  border: none;
+  border-radius: 5px;
+
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+}
+
+.sidebar{
+  padding: 20px;
+  background-color: #fff;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar p{
+  font-weight: 700;
+  font-family: 'Square Peg', cursive;
+  font-size: 2rem;
+  color: #480ca8;
+}
+
+.admin-list{
+  padding: 10px;
+
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.admin-list p{
+  margin: 0;
+  text-align: center;
+}
+
+.admin-list-top{
+  display: flex;
+  justify-content: space-between;
+}
+
+.admin-list-top svg{
+  font-size: 1.4rem;
+  color: #2a9d8f;
+}
+
+.admin-list-top svg:hover{
+  transform: scale(1.05);
+}
+
+.admin-userlist-item, .admin-userlist-label{
+  margin: 5px 0;
+  font-size: .9rem;
+
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr;
+}
+
+.admin-userlist-label{
+  color: #6d6875;
+  font-size: .8rem;
+}
+
+.admin-actions{
+  justify-self: center;
+
+  display: flex;
+  gap: 10px;
+}
+
+.admin-buttons{
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: #e5e5e5;
+  padding: 10px 20px;
+}
+
+.edit-user-popup p{
+  color: #6c757d;
+  font-size: .8rem;
+}
+
+.sidebar .admin-selected{
+  font-weight: 700;
 }
 
 @media (min-width: 768px) {
