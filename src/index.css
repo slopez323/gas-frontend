@@ -127,6 +127,7 @@ button.login-select, .auth-options button:hover {
   -webkit-user-select: none;
   touch-action: manipulation;
   z-index: 0;
+  color: black;
 }
 
 .login-submit-btn:after {
@@ -390,7 +391,7 @@ button.login-select, .auth-options button:hover {
 .star-div{
   padding-top: 10px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
 .star-div svg{
@@ -516,6 +517,7 @@ button.login-select, .auth-options button:hover {
   outline: none;
   padding: 5px 10px;
   cursor: pointer;
+  color: black;
 }
 
 .update-popup button:hover{
@@ -781,6 +783,7 @@ font-size: .8rem;
   cursor: pointer;
   background-color: #e5e5e5;
   padding: 10px 20px;
+  color: black;
 }
 
 .edit-user-popup p{
@@ -824,6 +827,9 @@ font-size: .8rem;
   }
   .sidebar p{
     margin: 0;
+  }
+  .menu-container.show{
+    transform: translate3d(20px, 80px, 0);
   }
 }
 

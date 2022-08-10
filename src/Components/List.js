@@ -21,6 +21,8 @@ const List = ({
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
   const [isFav, setIsFav] = useState(false);
   const selected = place_id === clicked ? "selected" : "";
+  const url = `https://www.google.com/maps/place/?q=place_id:${place_id}`;
+
   const divRef = useRef(place_id);
 
   useEffect(() => {
@@ -73,6 +75,9 @@ const List = ({
         />
       </div>
       <div className="star-div">
+        <a href={url} target="_blank">
+          View station in Google Maps
+        </a>
         {!isFav && (
           <FontAwesomeIcon
             onClick={() => addToFav(place_id, name, vicinity)}

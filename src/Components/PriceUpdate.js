@@ -83,7 +83,7 @@ const PriceUpdate = ({
   }, [inputError]);
 
   return (
-    <div className="popup-container">
+    <div className="popup-container" style={{ maxHeight: window.innerHeight }}>
       <div className="popup update-popup">
         <p>
           {type.toUpperCase()}: {method.toUpperCase()}

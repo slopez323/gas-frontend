@@ -101,7 +101,7 @@ const Main = () => {
   }, [userId, updateUserData, sortType, filterType, page]);
 
   return (
-    <div className="user-view">
+    <div className="user-view" style={{ maxHeight: window.innerHeight }}>
       <div className="header">
         <FontAwesomeIcon
           icon={faBars}

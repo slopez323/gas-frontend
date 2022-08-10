@@ -56,6 +56,7 @@ const FavItem = ({
   const { placeId, placeName, placeAddress } = item;
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
   const [prices, setPrices] = useState(DeepCopy(GAS_TYPES));
+  const url = `https://www.google.com/maps/place/?q=place_id:${placeId}`;
 
   useEffect(() => {
     const runFetch = async () => {
@@ -80,6 +81,9 @@ const FavItem = ({
         <div>
           <p className="fav-name">{placeName}</p>
           <p className="fav-address">{placeAddress}</p>
+          <a href={url} target="_blank">
+            View station in Google Maps
+          </a>
         </div>
         <div className="fav-star-div">
           <FontAwesomeIcon
