@@ -41,10 +41,12 @@ const MapPage = () => {
       return;
     };
     const setPrices = async () => {
+      setIsLoading(true);
       await getPrices();
       setListWPrices(listCopy);
+      setIsLoading(false);
     };
-    setPrices();
+    if (listInfo.length) setPrices();
   }, [listInfo, priceReload]);
 
   useEffect(() => {
@@ -70,6 +72,7 @@ const MapPage = () => {
           setClicked={setClicked}
           setListInfo={setListInfo}
           searchedLoc={searchedLoc}
+          setIsLoading={setIsLoading}
         />
       </div>
       <div id="list">
@@ -84,30 +87,37 @@ const MapPage = () => {
           <option value="price-desc">Price ↓</option> */}
           </select>
         )}
-        {sortedList.length > 0 &&
-          sortedList.map((item) => {
-            return (
-              <List
-                item={item}
-                clicked={clicked}
-                setClicked={setClicked}
-                favorites={favorites}
-                addToFav={addToFav}
-                removeFav={removeFav}
-                updatePrice={updatePrice}
-                priceToUpdate={priceToUpdate}
-                setPriceToUpdate={setPriceToUpdate}
-                setIsLoading={setIsLoading}
-                key={item.place_id}
-              />
-            );
-          })}
+        <div className="list-body">
+          {sortedList.length > 0 &&
+            sortedList.map((item) => {
+              return (
+                <List
+                  item={item}
+                  clicked={clicked}
+                  setClicked={setClicked}
+                  favorites={favorites}
+                  addToFav={addToFav}
+                  removeFav={removeFav}
+                  updatePrice={updatePrice}
+                  priceToUpdate={priceToUpdate}
+                  setPriceToUpdate={setPriceToUpdate}
+                  key={item.place_id}
+                />
+              );
+            })}
+        </div>
       </div>
     </div>
   );
 };
 
-const Map = ({ clicked, setClicked, setListInfo, searchedLoc }) => {
+const Map = ({
+  clicked,
+  setClicked,
+  setListInfo,
+  searchedLoc,
+  setIsLoading,
+}) => {
   const ref = useRef();
   const [map, setMap] = useState();
   const [markers, setMarkers] = useState([]);
@@ -204,39 +214,42 @@ const Map = ({ clicked, setClicked, setListInfo, searchedLoc }) => {
   }, [map]);
 
   useEffect(() => {
-    deleteMarkers();
+    if (map) {
+      deleteMarkers();
 
-    const request = {
-      type: "gas_station",
-      location: center,
-      radius: "10000",
-    };
-    const service = new window.google.maps.places.PlacesService(map);
-    service.nearbySearch(request, async function (results, status) {
-      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-        const newMarkers = [];
-        const newInfo = [];
-        const infowindow = new window.google.maps.InfoWindow({
-          disableAutoPan: true,
-        });
-        for (let i = 0; i < results.length; i++) {
-          if (results[i].business_status === "OPERATIONAL") {
-            const newMarker = await createMarker(results[i]);
-            newMarkers.push(newMarker);
+      const request = {
+        type: "gas_station",
+        location: center,
+        radius: "10000",
+      };
+      const service = new window.google.maps.places.PlacesService(map);
+      service.nearbySearch(request, async function (results, status) {
+        setIsLoading(true);
+        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+          const newMarkers = [];
+          const newInfo = [];
+          const infowindow = new window.google.maps.InfoWindow({
+            disableAutoPan: true,
+          });
+          for (let i = 0; i < results.length; i++) {
+            if (results[i].business_status === "OPERATIONAL") {
+              const newMarker = await createMarker(results[i]);
+              newMarkers.push(newMarker);
 
-            const newInfoItem = createInfoWindow(
-              results[i],
-              newMarker,
-              infowindow
-            );
-            newInfo.push(newInfoItem);
+              const newInfoItem = createInfoWindow(
+                results[i],
+                newMarker,
+                infowindow
+              );
+              newInfo.push(newInfoItem);
+            }
           }
+          setMarkers(newMarkers);
+          setListInfo(newInfo);
         }
-        setMarkers(newMarkers);
-        setListInfo(newInfo);
-        //   map.setCenter(results[0].geometry.location);
-      }
-    });
+        setIsLoading(false);
+      });
+    }
   }, [map, center]);
 
   useEffect(() => {
@@ -281,8 +294,9 @@ const MapSearch = ({ setSearchedLoc }) => {
     );
     autoCompleteRef.current.addListener("place_changed", async () => {
       const place = await autoCompleteRef.current.getPlace();
-      console.log(place.geometry.location);
       setSearchedLoc(place.geometry.location);
+
+      inputRef.current.value = "";
     });
   }, []);
 
