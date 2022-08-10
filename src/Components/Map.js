@@ -60,7 +60,7 @@ const MapPage = () => {
   return (
     <div
       className="main map-container"
-      style={{ maxHeight: window.innerHeight - 156 }}
+      style={{ maxHeight: window.innerHeight - 125 }}
     >
       {isLoading && <Loading />}
       <div className="map-search-div">

@@ -30,7 +30,10 @@ const Log = () => {
   }, [numPages]);
 
   return (
-    <div className="main log-container">
+    <div
+      className="main log-container"
+      style={{ maxHeight: window.innerHeight - 145 }}
+    >
       <div>
         <select
           value={filterType}

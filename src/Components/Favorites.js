@@ -21,7 +21,10 @@ const Favorites = () => {
   ] = useOutletContext();
 
   return (
-    <div className="main fav-container">
+    <div
+      className="main fav-container"
+      style={{ maxHeight: window.innerHeight - 145 }}
+    >
       {favorites.length === 0 && <p className="empty">No favorites.</p>}
       {favorites.map((item) => {
         return (
