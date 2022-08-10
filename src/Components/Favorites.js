@@ -56,7 +56,9 @@ const FavItem = ({
   const { placeId, placeName, placeAddress } = item;
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
   const [prices, setPrices] = useState(DeepCopy(GAS_TYPES));
-  const url = `https://www.google.com/maps/place/?q=place_id:${placeId}`;
+  const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    placeAddress
+  )}&query_place_id=${placeId}`;
 
   useEffect(() => {
     const runFetch = async () => {
