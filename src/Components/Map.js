@@ -131,6 +131,7 @@ const Map = ({ clicked, setClicked, setListInfo, searchedLoc }) => {
 
   const createInfoWindow = (place, marker, infowindow) => {
     const { place_id, name, vicinity, geometry } = place;
+    const url = `https://www.google.com/maps/place/?q=place_id:${place_id}`;
 
     const dist = distance(
       center.lat,
@@ -141,11 +142,10 @@ const Map = ({ clicked, setClicked, setListInfo, searchedLoc }) => {
     );
 
     window.google.maps.event.addListener(marker, "click", () => {
-      const contentString = `<div>${name}</div><div>${vicinity}</div>`;
+      const contentString = `<div>${name}</div><div>${vicinity}</div><div><a href=${url} target="_blank">View in Google Maps</a></div>`;
       infowindow.setContent(contentString);
       infowindow.open({
         anchor: marker,
-        // map,
         shouldFocus: false,
       });
       setClicked(place_id);
