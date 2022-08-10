@@ -21,7 +21,9 @@ const List = ({
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
   const [isFav, setIsFav] = useState(false);
   const selected = place_id === clicked ? "selected" : "";
-  const url = `https://www.google.com/maps/place/?q=place_id:${place_id}`;
+  const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    vicinity
+  )}&query_place_id=${place_id}`;
 
   const divRef = useRef(place_id);
 

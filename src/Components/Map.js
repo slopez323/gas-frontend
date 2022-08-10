@@ -131,7 +131,10 @@ const Map = ({ clicked, setClicked, setListInfo, searchedLoc }) => {
 
   const createInfoWindow = (place, marker, infowindow) => {
     const { place_id, name, vicinity, geometry } = place;
-    const url = `https://www.google.com/maps/place/?q=place_id:${place_id}`;
+
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+      vicinity
+    )}&query_place_id=${place_id}`;
 
     const dist = distance(
       center.lat,
