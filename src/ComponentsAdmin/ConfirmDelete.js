@@ -19,6 +19,7 @@ const ConfirmDelete = ({
         <p>Delete {username.toUpperCase()} from system?</p>
         <div className="confirm-buttons">
           <button
+            style={{ fontWeight: "bold" }}
             className="admin-buttons"
             onClick={async () => {
               const deleteResponse = await deleteUser(id);

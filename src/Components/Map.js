@@ -26,7 +26,6 @@ const MapPage = () => {
   const [clicked, setClicked] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [searchedLoc, setSearchedLoc] = useState();
-  const mainHeight = window.innerHeight - 140;
 
   useEffect(() => {
     const listCopy = DeepCopy(listInfo);
@@ -59,7 +58,10 @@ const MapPage = () => {
   }, [listWPrices, sortType]);
 
   return (
-    <div className="main map-container">
+    <div
+      className="main map-container"
+      style={{ maxHeight: window.innerHeight - 156 }}
+    >
       {isLoading && <Loading />}
       <div className="map-search-div">
         {!isLoading && <MapSearch setSearchedLoc={setSearchedLoc} />}
@@ -70,7 +72,7 @@ const MapPage = () => {
           searchedLoc={searchedLoc}
         />
       </div>
-      <div id="list" style={{ maxHeight: mainHeight }}>
+      <div id="list">
         {!isLoading && (
           <select
             value={sortType}
@@ -89,14 +91,10 @@ const MapPage = () => {
                 item={item}
                 clicked={clicked}
                 setClicked={setClicked}
-                username={username}
                 favorites={favorites}
-                setUpdateUserData={setUpdateUserData}
                 addToFav={addToFav}
                 removeFav={removeFav}
                 updatePrice={updatePrice}
-                priceReload={priceReload}
-                fetchPrices={fetchPrices}
                 priceToUpdate={priceToUpdate}
                 setPriceToUpdate={setPriceToUpdate}
                 setIsLoading={setIsLoading}
@@ -263,20 +261,13 @@ const MapSearch = ({ setSearchedLoc }) => {
 
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const initialLocation = new window.google.maps.LatLng(
-            position.coords.latitude,
-            position.coords.longitude
-          );
-          setSearchedLoc(initialLocation);
-        }
-        // () =>
-        //   setCenter({
-        //     lat: 40.8859,
-        //     lng: -74.0435,
-        //   })
-      );
+      navigator.geolocation.getCurrentPosition((position) => {
+        const initialLocation = new window.google.maps.LatLng(
+          position.coords.latitude,
+          position.coords.longitude
+        );
+        setSearchedLoc(initialLocation);
+      });
     }
   };
 

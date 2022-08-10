@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@100;400&;700&family=Square+Peg&family=Pathway+Gothic+One&family=Bayon&display=swap');
 
 body {
+  width: 100vw;
+  height: 100vh;
   margin: 0;
   font-family: 'Catamaran', sans-serif;
   font-weight: 400;
@@ -11,6 +13,7 @@ body {
 }
 
 .login-page{
+  width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -26,6 +29,7 @@ body {
 
 .auth{
   width: 500px;
+  max-width: 90vw;
 
   display: flex;
   flex-direction: column;
@@ -80,7 +84,8 @@ button.login-select, .auth-options button:hover {
 }
 
 .auth-details{
-  padding: 50px;
+  padding: 30px 0;
+  justify-self: stretch;
   border-radius: 5px;
   background-color: white;
   box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
@@ -91,8 +96,8 @@ button.login-select, .auth-options button:hover {
   gap: 5px;
 }
 
-.auth-details input,
-.new-user-popup input{
+.auth-details input{
+  width: 50%;
   border: none;
   outline: none;
   border-bottom: 2px solid #6c757d;
@@ -203,6 +208,8 @@ button.login-select, .auth-options button:hover {
 
 .main{
   padding: 20px;
+  box-sizing: border-box;
+  overflow: auto;
 }
 
 .admin-btn{
@@ -383,7 +390,7 @@ button.login-select, .auth-options button:hover {
 .star-div{
   padding-top: 10px;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .star-div svg{
@@ -471,6 +478,7 @@ button.login-select, .auth-options button:hover {
 
 .popup{
   min-width: 200px;
+  max-width: 90vw;
   min-height: 200px;
   background-color: white;
   position: absolute;
@@ -561,7 +569,7 @@ button.login-select, .auth-options button:hover {
 }
 
 
-select{
+.main select, .admin-list-top select{
 background-color: transparent;
 border: none;
 outline: none;
@@ -767,7 +775,7 @@ font-size: .8rem;
   gap: 10px;
 }
 
-.admin-buttons{
+.admin-buttons, .confirm-buttons button{
   border: none;
   outline: none;
   cursor: pointer;
@@ -795,6 +803,27 @@ font-size: .8rem;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(3, 1fr);
     gap: 10px;
+  }
+  .header img{
+    justify-self: flex-end;
+    margin-right: 25px;
+  }
+  .map-container{
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 10px;
+  }
+  .admin-main{
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  .sidebar{
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 5px;
+    padding: 10px;
+  }
+  .sidebar p{
+    margin: 0;
   }
 }
 

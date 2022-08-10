@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Helpers/AuthHook";
 
 const ConfirmPopup = ({ setShowConfirmPopup }) => {
-  const { userId, deleteAccount } = useAuth();
+  const { deleteAccount } = useAuth();
   const navigate = useNavigate();
 
   return (
