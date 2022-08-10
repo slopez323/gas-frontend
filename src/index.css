@@ -572,7 +572,7 @@ button.login-select, .auth-options button:hover {
 }
 
 
-.main select, .admin-list-top select{
+.main select, .admin-list-top-right>select{
 background-color: transparent;
 border: none;
 outline: none;
@@ -745,6 +745,8 @@ font-size: .8rem;
 }
 
 .admin-list-top{
+  margin-bottom: 5px;
+
   display: flex;
   justify-content: space-between;
 }
@@ -796,6 +798,40 @@ font-size: .8rem;
   font-weight: 700;
 }
 
+.admin-list-top-right{
+  display: flex;
+  gap: 10px;
+}
+
+.admin-search{
+  border: 1px solid #6c757d;
+  border-radius: 3px;
+  background-color: white;
+
+  display: flex;
+  align-items: center;
+}
+
+.admin-search select{
+  border: none;
+  outline: none;
+  color: #bb3e03;
+  font-weight: 700;
+}
+
+.admin-search input{
+  border: none;
+  outline: none;
+  background-color: transparent;
+  margin-left: 5px;
+}
+
+.admin-search svg{
+  color: #6c757d;
+  font-size: .8rem;
+  margin-right: 5px;
+}
+
 @media (min-width: 768px) {
   .login-submit-btn {
     padding: 13px 50px 13px;
@@ -834,6 +870,10 @@ font-size: .8rem;
   }
   .update-popup{
     transform: translate(-50%, -115%);
+  }
+  .admin-list-top-right{
+    flex-direction: column;
+    align-items: flex-end
   }
 }
 

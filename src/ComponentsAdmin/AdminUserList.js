@@ -1,6 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCirclePlus,
+  faMagnifyingGlass,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import User from "./User";
 import NewUserDetails from "./NewUserDetails";
 
@@ -12,10 +16,18 @@ const AdminUserList = () => {
   const [filterType, setFilterType] = useState("all");
   const [updateList, setUpdateList] = useState();
   const [showCreateNew, setShowCreateNew] = useState(false);
+  const [searchType, setSearchType] = useState("id");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const searchRef = useRef();
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const url = `${process.env.REACT_APP_URL_ENDPOINT}/admin/all-users?page=${page}&limit=10&filter=${filterType}`;
+      const url = `${
+        process.env.REACT_APP_URL_ENDPOINT
+      }/admin/all-users?page=${page}&limit=10&filter=${filterType}&searchType=${searchType}&searchTerm=${
+        searchTerm ? searchTerm : "none"
+      }`;
       const response = await fetch(url);
       const responseJSON = await response.json();
 
@@ -25,7 +37,7 @@ const AdminUserList = () => {
       }
     };
     fetchUsers();
-  }, [page, filterType, updateList]);
+  }, [page, filterType, updateList, searchTerm]);
 
   useEffect(() => {
     setPageNums(Array.from({ length: numPages }, (_, i) => i + 1));
@@ -39,11 +51,43 @@ const AdminUserList = () => {
           icon={faCirclePlus}
           onClick={() => setShowCreateNew(true)}
         />
-        <select onChange={(e) => setFilterType(e.target.value)}>
-          <option value="all">All Users</option>
-          <option value="admin">Admin</option>
-          <option value="user">Non-admin</option>
-        </select>
+        <div className="admin-list-top-right">
+          <div className="admin-search">
+            <select
+              value={searchType}
+              onChange={(e) => setSearchType(e.target.value)}
+            >
+              <option value="id">ID</option>
+              <option value="username">Username</option>
+            </select>
+            <input
+              ref={searchRef}
+              placeholder={`Search ${searchType}`}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") setSearchTerm(e.target.value);
+              }}
+            />
+            <FontAwesomeIcon
+              title="search"
+              icon={faMagnifyingGlass}
+              onClick={() => setSearchTerm(searchRef.current.value)}
+            />
+            <FontAwesomeIcon
+              title="clear"
+              icon={faXmark}
+              style={{ color: "#bb3e03" }}
+              onClick={() => {
+                setSearchTerm("");
+                searchRef.current.value = "";
+              }}
+            />
+          </div>
+          <select onChange={(e) => setFilterType(e.target.value)}>
+            <option value="all">All Users</option>
+            <option value="admin">Admin</option>
+            <option value="user">Non-admin</option>
+          </select>
+        </div>
       </div>
       <div>
         <div className="admin-userlist-label">
