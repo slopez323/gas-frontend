@@ -15,7 +15,6 @@ const List = ({
   updatePrice,
   priceToUpdate,
   setPriceToUpdate,
-  setIsLoading,
 }) => {
   const { place_id, name, prices, vicinity, dist } = item;
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
@@ -26,10 +25,6 @@ const List = ({
   )}&query_place_id=${place_id}`;
 
   const divRef = useRef(place_id);
-
-  useEffect(() => {
-    setIsLoading(false);
-  }, []);
 
   useEffect(() => {
     if (divRef.current.classList.contains("selected"))

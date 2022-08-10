@@ -325,6 +325,12 @@ button.login-select, .auth-options button:hover {
 
 #list{
   padding: 0;
+  grid-template-rows: auto 1fr;
+}
+
+.list-body{
+  display: grid;
+  gap: 10px;
 }
 
 .selected{
@@ -683,6 +689,7 @@ font-size: .8rem;
 .loading-container {
   position: fixed;
   z-index: 1000;
+  background-color: #f0efebd7;
 
   display: grid;
   justify-content: center;
