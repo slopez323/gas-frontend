@@ -6,7 +6,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="main dash">
+    <div className="main dash" style={{ maxHeight: window.innerHeight - 156 }}>
       <div
         style={{ backgroundColor: "#e07a5f" }}
         className="dash-option"

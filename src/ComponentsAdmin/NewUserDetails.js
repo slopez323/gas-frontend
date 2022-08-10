@@ -48,6 +48,7 @@ const NewUserDetails = ({ setUpdateList, setShowCreateNew }) => {
           <option value="user">User</option>
         </select>
         <button
+          style={{ fontWeight: "bold" }}
           className="admin-buttons"
           onClick={async () => {
             const error = await checkDetails(username, password, confirm);

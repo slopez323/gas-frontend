@@ -49,6 +49,7 @@ const EditUserDetails = ({
           </select>
         </div>
         <button
+          style={{ fontWeight: "bold" }}
           className="admin-buttons"
           onClick={async () => {
             const editResponse = await editUser(id, editUsername, editAccess);

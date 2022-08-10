@@ -8,9 +8,7 @@ import ConfirmPopup from "../Components/ConfirmPopup";
 import { useAuth } from "../Helpers/AuthHook";
 
 const Main = () => {
-  // const [userId, setUserId] = useState();
   const [username, setUsername] = useState("");
-  // const [isAdmin, setIsAdmin] = useState(false);
   const [priceToUpdate, setPriceToUpdate] = useState();
   const [favorites, setFavorites] = useState([]);
   const [userLog, setUserLog] = useState([]);
@@ -50,13 +48,12 @@ const Main = () => {
         username,
       }),
     });
-    const responseJSON = response.json();
+    const responseJSON = await response.json();
     setPriceReload(response);
     setUpdateUserData(response);
   };
 
   const addToFav = async (placeId, name, vicinity) => {
-    //add to user db fav
     const url = `${process.env.REACT_APP_URL_ENDPOINT}/users/add-fav`;
     const response = await fetch(url, {
       method: "PUT",
@@ -65,12 +62,11 @@ const Main = () => {
       },
       body: JSON.stringify({ userId, placeId, name, vicinity }),
     });
-    const responseJSON = response.json();
+    const responseJSON = await response.json();
     setUpdateUserData(response);
   };
 
   const removeFav = async (placeId, name, vicinity) => {
-    //add to user db fav
     const url = `${process.env.REACT_APP_URL_ENDPOINT}/users/remove-fav`;
     const response = await fetch(url, {
       method: "PUT",
@@ -79,7 +75,7 @@ const Main = () => {
       },
       body: JSON.stringify({ userId, placeId, name, vicinity }),
     });
-    const responseJSON = response.json();
+    const responseJSON = await response.json();
     setUpdateUserData(response);
   };
 
@@ -105,7 +101,6 @@ const Main = () => {
   }, [userId, updateUserData, sortType, filterType, page]);
 
   return (
-    // <div>
     <div className="user-view">
       <div className="header">
         <FontAwesomeIcon
@@ -161,7 +156,6 @@ const Main = () => {
         ]}
       />
     </div>
-    // </div>
   );
 };
 

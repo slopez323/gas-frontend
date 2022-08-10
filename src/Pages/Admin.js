@@ -21,7 +21,10 @@ const Admin = () => {
       <div className="header">
         <img src={logo} alt="logo" />
       </div>
-      <div className="admin-main">
+      <div
+        className="admin-main"
+        style={{ maxHeight: window.innerHeight - 156 }}
+      >
         <div className="sidebar">
           <p>myGas Users</p>
         </div>
