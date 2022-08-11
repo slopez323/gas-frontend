@@ -2,13 +2,31 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGasPump, faStar, faList } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../Helpers/AuthHook";
+import { useEffect, useRef } from "react";
 
 const Menu = ({ showMenu, setShowMenu, setShowConfirmPopup, username }) => {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
+  const menuRef = useRef();
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(e.target) &&
+        !e.target.classList.contains("fa-bars") &&
+        !e.target.parentElement.classList.contains("fa-bars")
+      ) {
+        setShowMenu("hide");
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
   return (
-    <div className={`menu-container ${showMenu}`}>
+    <div ref={menuRef} className={`menu-container ${showMenu}`}>
       <div id="menu-username">{username}</div>
       <div className="menu-options">
         <p
