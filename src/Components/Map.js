@@ -215,8 +215,6 @@ const Map = ({
 
   useEffect(() => {
     if (map) {
-      deleteMarkers();
-
       const request = {
         type: "gas_station",
         location: center,
@@ -226,6 +224,7 @@ const Map = ({
       service.nearbySearch(request, async function (results, status) {
         setIsLoading(true);
         if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+          deleteMarkers();
           const newMarkers = [];
           const newInfo = [];
           const infowindow = new window.google.maps.InfoWindow({
