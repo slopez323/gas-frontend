@@ -86,6 +86,10 @@ const Main = () => {
   }, [userId]);
 
   useEffect(() => {
+    setPage(1);
+  }, [filterType]);
+
+  useEffect(() => {
     const getUserData = async () => {
       const url = `${process.env.REACT_APP_URL_ENDPOINT}/users/user?id=${userId}&page=${page}&limit=10&filter=${filterType}&sort=${sortType}`;
       const response = await fetch(url);
@@ -95,7 +99,6 @@ const Main = () => {
       setFavorites(responseJSON.message.favorites);
       setUserLog(responseJSON.message.log);
       setNumPages(Math.ceil(responseJSON.message.totalLogs / 10));
-      setPage(1);
     };
     if (userId) getUserData();
   }, [userId, updateUserData, sortType, filterType, page]);
