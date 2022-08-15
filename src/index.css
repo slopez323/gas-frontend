@@ -2,7 +2,7 @@
 
 body {
   width: 100vw;
-  height: 100vh;
+  /* height: 100vh; */
   margin: 0;
   font-family: 'Catamaran', sans-serif;
   font-weight: 400;
@@ -155,7 +155,7 @@ button.login-select, .auth-options button:hover {
 }
 
 .user-view, .admin-view{
-  min-height: 100vh;
+  /* min-height: 100vh; */
   background-color: #f0efeb;
 
   display: grid;

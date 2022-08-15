@@ -17,7 +17,7 @@ const Admin = () => {
   }, [isAdmin]);
 
   return (
-    <div className="admin-view">
+    <div className="admin-view" style={{ height: window.innerHeight }}>
       <div className="header">
         <img src={logo} alt="logo" />
       </div>
