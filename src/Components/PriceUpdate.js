@@ -132,6 +132,7 @@ const NumKeypad = ({ keypress, setKeypress }) => {
           <span
             className="num-keys"
             onClick={(e) => handleMobileKey(e.target.textContent)}
+            key={num}
           >
             {num}
           </span>
