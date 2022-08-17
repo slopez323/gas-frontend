@@ -18,6 +18,7 @@ const Favorites = () => {
     fetchPrices,
     priceToUpdate,
     setPriceToUpdate,
+    setIsLoading,
   ] = useOutletContext();
 
   return (
@@ -36,6 +37,7 @@ const Favorites = () => {
             priceReload={priceReload}
             priceToUpdate={priceToUpdate}
             setPriceToUpdate={setPriceToUpdate}
+            setIsLoading={setIsLoading}
             key={item.placeId}
           />
         );
@@ -52,6 +54,7 @@ const FavItem = ({
   priceReload,
   priceToUpdate,
   setPriceToUpdate,
+  setIsLoading,
 }) => {
   const { placeId, placeName, placeAddress } = item;
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
@@ -62,8 +65,10 @@ const FavItem = ({
 
   useEffect(() => {
     const runFetch = async () => {
+      setIsLoading(true);
       const data = await fetchPrices(placeId);
       if (data.success && !data.no_prices) setPrices(data.message);
+      setIsLoading(false);
     };
     runFetch();
   }, [priceReload]);

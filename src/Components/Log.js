@@ -13,6 +13,7 @@ const Log = () => {
     fetchPrices,
     priceToUpdate,
     setPriceToUpdate,
+    setIsLoading,
     userLog,
     filterType,
     setFilterType,
@@ -56,6 +57,7 @@ const Log = () => {
               item={item}
               username={username}
               setUpdateUserData={setUpdateUserData}
+              setIsLoading={setIsLoading}
               key={`${item.activity}-${item.time}`}
             />
           );
@@ -90,7 +92,7 @@ const Log = () => {
   );
 };
 
-const LogItemPrice = ({ item, username, setUpdateUserData }) => {
+const LogItemPrice = ({ item, username, setUpdateUserData, setIsLoading }) => {
   const {
     placeId,
     placeName,
@@ -103,6 +105,7 @@ const LogItemPrice = ({ item, username, setUpdateUserData }) => {
   } = item;
 
   const deletePrice = async (username, placeId, type, method, activityId) => {
+    setIsLoading(true);
     const url = `${process.env.REACT_APP_URL_ENDPOINT}/stations/delete-price`;
     const response = await fetch(url, {
       method: "PUT",
@@ -113,6 +116,7 @@ const LogItemPrice = ({ item, username, setUpdateUserData }) => {
     });
     const responseJSON = await response.json();
     setUpdateUserData(response);
+    setIsLoading(false);
   };
 
   return (

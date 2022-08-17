@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
-import Loading from "./Loading";
 import List from "./List";
 import { DeepCopy, distance, GAS_TYPES } from "../Helpers/helpers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,14 +17,18 @@ const MapPage = () => {
     fetchPrices,
     priceToUpdate,
     setPriceToUpdate,
+    setIsLoading,
   ] = useOutletContext();
   const [listInfo, setListInfo] = useState([]);
   const [listWPrices, setListWPrices] = useState([]);
   const [sortType, setSortType] = useState("dist-asc");
   const [sortedList, setSortedList] = useState([]);
   const [clicked, setClicked] = useState();
-  const [isLoading, setIsLoading] = useState(true);
   const [searchedLoc, setSearchedLoc] = useState();
+
+  useEffect(() => {
+    setIsLoading(true);
+  }, []);
 
   useEffect(() => {
     const listCopy = DeepCopy(listInfo);
@@ -64,9 +67,11 @@ const MapPage = () => {
       className="main map-container"
       style={{ maxHeight: window.innerHeight - 125 }}
     >
-      {isLoading && <Loading />}
       <div className="map-search-div">
-        {!isLoading && <MapSearch setSearchedLoc={setSearchedLoc} />}
+        <MapSearch
+          setSearchedLoc={setSearchedLoc}
+          setIsLoading={setIsLoading}
+        />
         <Map
           clicked={clicked}
           setClicked={setClicked}
@@ -76,17 +81,12 @@ const MapPage = () => {
         />
       </div>
       <div id="list">
-        {!isLoading && (
-          <select
-            value={sortType}
-            onChange={(e) => setSortType(e.target.value)}
-          >
-            <option value="dist-asc">Distance ↑</option>
-            <option value="dist-desc">Distance ↓</option>
-            {/* <option value="price-asc">Price ↑</option>
+        <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
+          <option value="dist-asc">Distance ↑</option>
+          <option value="dist-desc">Distance ↓</option>
+          {/* <option value="price-asc">Price ↑</option>
           <option value="price-desc">Price ↓</option> */}
-          </select>
-        )}
+        </select>
         <div className="list-body">
           {sortedList.length > 0 &&
             sortedList.map((item) => {
@@ -131,11 +131,13 @@ const Map = ({
   };
 
   const createMarker = async (place) => {
+    setIsLoading(true);
     const marker = new window.google.maps.Marker({
       map,
       position: place.geometry.location,
       title: place.place_id,
     });
+    setIsLoading(false);
     return marker;
   };
 
@@ -174,6 +176,7 @@ const Map = ({
   };
 
   useEffect(() => {
+    setIsLoading(true);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -197,11 +200,14 @@ const Map = ({
         lat: 40.8859,
         lng: -74.0435,
       });
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
     if (ref.current && !map && center) {
+      setIsLoading(true);
       setMap(new window.google.maps.Map(ref.current, { center, zoom }));
+      setIsLoading(false);
     }
   }, [ref, map, center]);
 
@@ -266,7 +272,7 @@ const Map = ({
   return <div ref={ref} id="map" />;
 };
 
-const MapSearch = ({ setSearchedLoc }) => {
+const MapSearch = ({ setSearchedLoc, setIsLoading }) => {
   const autoCompleteRef = useRef();
   const inputRef = useRef();
   const options = {
@@ -275,6 +281,7 @@ const MapSearch = ({ setSearchedLoc }) => {
   };
 
   const getCurrentLocation = () => {
+    setIsLoading(true);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const initialLocation = new window.google.maps.LatLng(
@@ -284,9 +291,11 @@ const MapSearch = ({ setSearchedLoc }) => {
         setSearchedLoc(initialLocation);
       });
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
+    setIsLoading(true);
     autoCompleteRef.current = new window.google.maps.places.Autocomplete(
       inputRef.current,
       options
@@ -297,6 +306,7 @@ const MapSearch = ({ setSearchedLoc }) => {
 
       inputRef.current.value = "";
     });
+    setIsLoading(false);
   }, []);
 
   return (

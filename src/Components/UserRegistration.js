@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { useAuth } from "../Helpers/AuthHook";
 
 const UserRegistration = () => {
+  const [setIsLoading] = useOutletContext();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -32,6 +33,7 @@ const UserRegistration = () => {
       <button
         className="login-submit-btn"
         onClick={async () => {
+          setIsLoading(true);
           const error = await checkDetails(username, password, confirm);
           if (error === "") {
             setShowError(false);
@@ -46,6 +48,7 @@ const UserRegistration = () => {
             setErrorMsg(error);
             setShowError(true);
           }
+          setIsLoading(false);
         }}
       >
         Create Account

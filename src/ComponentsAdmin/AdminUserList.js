@@ -8,7 +8,7 @@ import {
 import User from "./User";
 import NewUserDetails from "./NewUserDetails";
 
-const AdminUserList = () => {
+const AdminUserList = ({ setIsLoading }) => {
   const [allUsers, setAllUsers] = useState([]);
   const [page, setPage] = useState(1);
   const [numPages, setNumPages] = useState(1);
@@ -23,6 +23,7 @@ const AdminUserList = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
+      setIsLoading(true);
       const url = `${
         process.env.REACT_APP_URL_ENDPOINT
       }/admin/all-users?page=${page}&limit=10&filter=${filterType}&searchType=${searchType}&searchTerm=${
@@ -35,6 +36,7 @@ const AdminUserList = () => {
         setAllUsers(responseJSON.message);
         setNumPages(Math.ceil(responseJSON.count / 10));
       }
+      setIsLoading(false);
     };
     fetchUsers();
   }, [page, filterType, updateList, searchTerm]);
