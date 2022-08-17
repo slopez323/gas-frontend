@@ -5,6 +5,7 @@ import logo from "../Assets/myG.png";
 import { Outlet, useNavigate } from "react-router-dom";
 import Menu from "../Components/Menu";
 import ConfirmPopup from "../Components/ConfirmPopup";
+import Loading from "../Components/Loading";
 import { useAuth } from "../Helpers/AuthHook";
 
 const Main = () => {
@@ -20,18 +21,22 @@ const Main = () => {
   const [numPages, setNumPages] = useState(1);
   const [filterType, setFilterType] = useState("all");
   const [sortType, setSortType] = useState("desc");
+  const [isLoading, setIsLoading] = useState(false);
 
   const { userId, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   const fetchPrices = async (placeId) => {
+    setIsLoading(true);
     const url = `${process.env.REACT_APP_URL_ENDPOINT}/stations/station/${placeId}`;
     const response = await fetch(url);
     const responseJSON = await response.json();
+    setIsLoading(false);
     return responseJSON;
   };
 
   const updatePrice = async (price, type, method, placeId, name, vicinity) => {
+    setIsLoading(true);
     const url = `${process.env.REACT_APP_URL_ENDPOINT}/stations/update-price`;
     const response = await fetch(url, {
       method: "POST",
@@ -51,9 +56,11 @@ const Main = () => {
     const responseJSON = await response.json();
     setPriceReload(response);
     setUpdateUserData(response);
+    setIsLoading(false);
   };
 
   const addToFav = async (placeId, name, vicinity) => {
+    setIsLoading(true);
     const url = `${process.env.REACT_APP_URL_ENDPOINT}/users/add-fav`;
     const response = await fetch(url, {
       method: "PUT",
@@ -64,9 +71,11 @@ const Main = () => {
     });
     const responseJSON = await response.json();
     setUpdateUserData(response);
+    setIsLoading(false);
   };
 
   const removeFav = async (placeId, name, vicinity) => {
+    setIsLoading(true);
     const url = `${process.env.REACT_APP_URL_ENDPOINT}/users/remove-fav`;
     const response = await fetch(url, {
       method: "PUT",
@@ -77,6 +86,7 @@ const Main = () => {
     });
     const responseJSON = await response.json();
     setUpdateUserData(response);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -91,6 +101,7 @@ const Main = () => {
 
   useEffect(() => {
     const getUserData = async () => {
+      setIsLoading(true);
       const url = `${process.env.REACT_APP_URL_ENDPOINT}/users/user?id=${userId}&page=${page}&limit=10&filter=${filterType}&sort=${sortType}`;
       const response = await fetch(url);
       const responseJSON = await response.json();
@@ -99,12 +110,14 @@ const Main = () => {
       setFavorites(responseJSON.message.favorites);
       setUserLog(responseJSON.message.log);
       setNumPages(Math.ceil(responseJSON.message.totalLogs / 10));
+      setIsLoading(false);
     };
     if (userId) getUserData();
   }, [userId, updateUserData, sortType, filterType, page]);
 
   return (
     <div className="user-view" style={{ height: window.innerHeight }}>
+      {isLoading && <Loading />}
       <div className="header">
         <FontAwesomeIcon
           icon={faBars}
@@ -148,6 +161,7 @@ const Main = () => {
           fetchPrices,
           priceToUpdate,
           setPriceToUpdate,
+          setIsLoading,
           userLog,
           filterType,
           setFilterType,

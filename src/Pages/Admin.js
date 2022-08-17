@@ -1,13 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../Assets/myG-light.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../Helpers/AuthHook";
 import AdminUserList from "../ComponentsAdmin/AdminUserList";
+import Loading from "../Components/Loading";
 
 const Admin = () => {
   const { isAdmin } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,6 +20,7 @@ const Admin = () => {
 
   return (
     <div className="admin-view" style={{ height: window.innerHeight }}>
+      {isLoading && <Loading />}
       <div className="header">
         <img src={logo} alt="logo" />
       </div>
@@ -28,7 +31,7 @@ const Admin = () => {
         <div className="sidebar">
           <p>myGas Users</p>
         </div>
-        <AdminUserList />
+        <AdminUserList setIsLoading={setIsLoading} />
       </div>
       {isAdmin && (
         <span className="admin-btn" onClick={(e) => navigate("/main")}>

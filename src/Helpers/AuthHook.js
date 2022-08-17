@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [userId, setUserId] = useState();
   const [isAdmin, setIsAdmin] = useState(false);
   const [authUpdate, setAuthUpdate] = useState();
+  const [isAuthLoading, setIsAuthLoading] = useState(false);
 
   useEffect(() => {
     const loggedUser = getUserToken();
@@ -15,6 +16,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const verify = async () => {
+      setIsAuthLoading(true);
       const url = `${urlEndpoint}/users/validate-token`;
       const response = await fetch(url, {
         method: "GET",
@@ -29,6 +31,7 @@ export const AuthProvider = ({ children }) => {
         setIsAdmin(responseJSON.isAdmin);
       } else removeUserToken();
       setAuthUpdate(response);
+      setIsAuthLoading(false);
       return responseJSON;
     };
 
@@ -60,6 +63,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (username, password) => {
+    setIsAuthLoading(true);
     const userDetails = { username, password };
     const url = `${urlEndpoint}/users/register`;
     const response = await fetch(url, {
@@ -74,10 +78,12 @@ export const AuthProvider = ({ children }) => {
       setUserToken(responseJSON.token);
     }
     setAuthUpdate(response);
+    setIsAuthLoading(false);
     return responseJSON;
   };
 
   const login = async (username, password) => {
+    setIsAuthLoading(true);
     const userDetails = { username, password };
     const url = `${urlEndpoint}/users/login`;
     const response = await fetch(url, {
@@ -92,6 +98,7 @@ export const AuthProvider = ({ children }) => {
       setUserToken(responseJSON.token);
     }
     setAuthUpdate(response);
+    setIsAuthLoading(false);
     return responseJSON;
   };
 
@@ -102,6 +109,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const deleteAccount = async () => {
+    setIsAuthLoading(true);
     const url = `${urlEndpoint}/users/delete-user/${userId}`;
     const response = await fetch(url, {
       method: "DELETE",
@@ -109,6 +117,7 @@ export const AuthProvider = ({ children }) => {
     const responseJSON = await response.json();
     if (responseJSON.success) removeUserToken();
     setAuthUpdate(response);
+    setIsAuthLoading(false);
     return responseJSON;
   };
 
@@ -120,6 +129,7 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     deleteAccount,
+    isAuthLoading,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

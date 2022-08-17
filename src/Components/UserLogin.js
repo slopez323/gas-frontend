@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { useAuth } from "../Helpers/AuthHook";
 
 const UserLogin = ({ setServerResponse }) => {
+  const [setIsLoading] = useOutletContext();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -25,6 +26,7 @@ const UserLogin = ({ setServerResponse }) => {
       <button
         className="login-submit-btn"
         onClick={async () => {
+          setIsLoading(true);
           const loginResponse = await login(username, password);
           if (loginResponse.success) {
             navigate("/main");
@@ -32,6 +34,7 @@ const UserLogin = ({ setServerResponse }) => {
             setErrorMsg(loginResponse.message);
             setShowError(true);
           }
+          setIsLoading(false);
         }}
       >
         Log In

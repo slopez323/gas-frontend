@@ -2,11 +2,13 @@ import { Outlet, useNavigate } from "react-router-dom";
 import logo from "../Assets/myG-light.png";
 import { useEffect, useState } from "react";
 import { useAuth } from "../Helpers/AuthHook";
+import Loading from "../Components/Loading";
 
 const LoginPage = () => {
   const [loginOption, setLoginOption] = useState("login");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { userId } = useAuth();
+  const { userId, isAuthLoading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,6 +19,7 @@ const LoginPage = () => {
 
   return (
     <div className="login-page">
+      {(isLoading || isAuthLoading) && <Loading />}
       <img src={logo} alt="logo" />
       <div className="auth">
         <div className="auth-options">
@@ -40,7 +43,7 @@ const LoginPage = () => {
           </button>
         </div>
         <div className="auth-details">
-          <Outlet />
+          <Outlet context={[setIsLoading]} />
         </div>
       </div>
     </div>
