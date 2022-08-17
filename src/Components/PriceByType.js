@@ -9,6 +9,11 @@ const PriceByType = ({
   place_id,
 }) => {
   const recentEntry = prices[type][method][prices[type][method].length - 1];
+  const updateBy =
+    recentEntry.updatedBy.length > 8
+      ? `${recentEntry.updatedBy.substring(0, 8)}...`
+      : recentEntry.updatedBy;
+
   return (
     <div
       className="gas-price-div"
@@ -25,9 +30,7 @@ const PriceByType = ({
       <div className="gas-price">${recentEntry.price}</div>
       {recentEntry.updatedBy !== "" && (
         <>
-          <p className="update-by">
-            Updated by {recentEntry.updatedBy.toUpperCase()}
-          </p>
+          <p className="update-by">Updated by {updateBy.toUpperCase()}</p>
           <p className="update-time">
             {
               <ReactTimeAgo
