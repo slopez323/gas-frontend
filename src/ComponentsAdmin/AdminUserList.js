@@ -60,6 +60,7 @@ const AdminUserList = ({ setIsLoading }) => {
               onChange={(e) => setSearchType(e.target.value)}
             >
               <option value="id">ID</option>
+              <option value="email">Email</option>
               <option value="username">Username</option>
             </select>
             <input
@@ -93,6 +94,7 @@ const AdminUserList = ({ setIsLoading }) => {
       </div>
       <div>
         <div className="admin-userlist-label">
+          <p>Email</p>
           <p>Username</p>
           <p>User ID</p>
           <p>User Access</p>
@@ -100,7 +102,12 @@ const AdminUserList = ({ setIsLoading }) => {
         </div>
         {allUsers.map((user) => {
           return (
-            <User user={user} key={user.id} setUpdateList={setUpdateList} />
+            <User
+              user={user}
+              key={user.id}
+              setUpdateList={setUpdateList}
+              setIsLoading={setIsLoading}
+            />
           );
         })}
       </div>
@@ -126,6 +133,7 @@ const AdminUserList = ({ setIsLoading }) => {
         <NewUserDetails
           setUpdateList={setUpdateList}
           setShowCreateNew={setShowCreateNew}
+          setIsLoading={setIsLoading}
         />
       )}
     </div>

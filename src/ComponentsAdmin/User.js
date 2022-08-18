@@ -7,7 +7,7 @@ import {
 import ConfirmDelete from "./ConfirmDelete";
 import EditUserDetails from "./EditUserDetails";
 
-const User = ({ user, setUpdateList }) => {
+const User = ({ user, setUpdateList, setIsLoading }) => {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [showEditUser, setShowEditUser] = useState(false);
 
@@ -15,6 +15,7 @@ const User = ({ user, setUpdateList }) => {
     <div>
       <hr />
       <div className="admin-userlist-item">
+        <p>{user.email}</p>
         <p>{user.username}</p>
         <p>{user.id}</p>
         <p>{user.access.toUpperCase()}</p>
@@ -37,15 +38,18 @@ const User = ({ user, setUpdateList }) => {
           id={user.id}
           setShowConfirmDelete={setShowConfirmDelete}
           setUpdateList={setUpdateList}
+          setIsLoading={setIsLoading}
         />
       )}
       {showEditUser && (
         <EditUserDetails
+          email={user.email}
           username={user.username}
           id={user.id}
           access={user.access}
           setShowEditUser={setShowEditUser}
           setUpdateList={setUpdateList}
+          setIsLoading={setIsLoading}
         />
       )}
     </div>

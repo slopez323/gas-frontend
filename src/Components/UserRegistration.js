@@ -4,6 +4,7 @@ import { useAuth } from "../Helpers/AuthHook";
 
 const UserRegistration = () => {
   const [setIsLoading] = useOutletContext();
+  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -16,6 +17,10 @@ const UserRegistration = () => {
 
   return (
     <>
+      <input
+        placeholder="Email Address"
+        onChange={(e) => setEmail(e.target.value)}
+      />
       <input
         placeholder="Username"
         onChange={(e) => setUsername(e.target.value)}
@@ -34,10 +39,10 @@ const UserRegistration = () => {
         className="login-submit-btn"
         onClick={async () => {
           setIsLoading(true);
-          const error = await checkDetails(username, password, confirm);
+          const error = await checkDetails(email, username, password, confirm);
           if (error === "") {
             setShowError(false);
-            const registerResponse = await register(username, password);
+            const registerResponse = await register(email, username, password);
             if (registerResponse.success) {
               navigate("/main");
             } else {

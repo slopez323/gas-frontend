@@ -223,8 +223,9 @@ const Map = ({
     if (map) {
       const request = {
         type: "gas_station",
-        location: center,
-        radius: "10000",
+        // location: center,
+        // radius: "10000",
+        bounds: map.getBounds(),
       };
       const service = new window.google.maps.places.PlacesService(map);
       service.nearbySearch(request, async function (results, status) {

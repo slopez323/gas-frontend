@@ -43,8 +43,13 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user]);
 
-  const checkDetails = (username, password, confirm) => {
-    if (username.length < 5) {
+  const checkDetails = (email, username, password, confirm) => {
+    if (email) {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return "Enter a valid email.";
+      }
+    }
+    if (username && username.length < 5) {
       return "Username must be at least 5 characters long.";
     }
     if (password !== confirm) {
@@ -62,9 +67,9 @@ export const AuthProvider = ({ children }) => {
     return "";
   };
 
-  const register = async (username, password) => {
+  const register = async (email, username, password) => {
     setIsAuthLoading(true);
-    const userDetails = { username, password };
+    const userDetails = { email, username, password };
     const url = `${urlEndpoint}/users/register`;
     const response = await fetch(url, {
       method: "POST",
@@ -102,6 +107,39 @@ export const AuthProvider = ({ children }) => {
     return responseJSON;
   };
 
+  const changePassword = async (password) => {
+    setIsAuthLoading(true);
+    const userDetails = { userId, password };
+    const url = `${urlEndpoint}/users/change-password`;
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userDetails),
+    });
+    const responseJSON = await response.json();
+    setAuthUpdate(response);
+    setIsAuthLoading(false);
+    return responseJSON;
+  };
+
+  const forgetPassword = async (email) => {
+    setIsAuthLoading(true);
+    const url = `${urlEndpoint}/users/forget-password`;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+    const responseJSON = await response.json();
+    setAuthUpdate(response);
+    setIsAuthLoading(false);
+    return responseJSON;
+  };
+
   const logout = () => {
     removeUserToken();
     setAuthUpdate("token removed");
@@ -128,6 +166,8 @@ export const AuthProvider = ({ children }) => {
     register,
     login,
     logout,
+    changePassword,
+    forgetPassword,
     deleteAccount,
     isAuthLoading,
   };
