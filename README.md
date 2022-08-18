@@ -37,5 +37,3 @@ View stations you've added and removed from your favorites list as well as price
 ### [ADMIN] Manage users
 
 Users with Admin access can view a list of all of the app's users. Only Admin can provide admin access to other users and edit emails/usernames. Admin can also delete any user's account in this page.
-
-![screenshot of admin page](src/Assets/Screenshots/admin-ss.png)
