@@ -84,7 +84,7 @@ button.login-select, .auth-options button:hover {
 }
 
 .auth-details{
-  padding: 30px 0;
+  padding: 30px 20px;
   justify-self: stretch;
   border-radius: 5px;
   background-color: white;
@@ -94,6 +94,12 @@ button.login-select, .auth-options button:hover {
   flex-direction: column;
   align-items: center;
   gap: 5px;
+}
+
+.auth-details div{
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 20px;
 }
 
 .auth-details input{
@@ -110,6 +116,21 @@ button.login-select, .auth-options button:hover {
 
 .auth-details input::placeholder{
   color: #ddbea9;
+}
+
+.auth-p{
+  margin: 0 25% 10px 0;
+  font-size: .8rem;
+  align-self: flex-end;
+  color: cadetblue;
+  cursor: pointer;
+}
+
+a{
+  text-decoration:underline;
+  font-size: .8rem;
+  color: cadetblue;
+  cursor: pointer;
 }
 
 .login-submit-btn{
@@ -198,14 +219,6 @@ button.login-select, .auth-options button:hover {
 .fa-bars:hover{
   color: #bb3e03;
 }
-/* 
-.header span{
-  grid-column: 3;
-  margin: 20px 30px 20px 0;
-  font-family: 'Pathway Gothic One', sans-serif;
-  font-size: 1.4rem;
-  text-transform: uppercase;
-} */
 
 .main{
   padding: 20px;
@@ -286,7 +299,7 @@ button.login-select, .auth-options button:hover {
   gap: 10px;
 }
 
-.search input{
+.search input, .popup input{
   border: none;
   outline: none;
   background-color: transparent;
@@ -772,12 +785,16 @@ font-size: .8rem;
   font-size: .9rem;
 
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 2fr 1fr 1fr;
 }
 
 .admin-userlist-label{
   color: #6d6875;
   font-size: .8rem;
+}
+
+.admin-userlist-item p, .admin-userlist-label p{
+  word-break: break-all;
 }
 
 .admin-actions{
@@ -787,7 +804,7 @@ font-size: .8rem;
   gap: 10px;
 }
 
-.admin-buttons, .confirm-buttons button{
+.admin-buttons, #forget-submit, .confirm-buttons button{
   border: none;
   outline: none;
   cursor: pointer;

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useAuth } from "../Helpers/AuthHook";
 
-const UserLogin = ({ setServerResponse }) => {
+const UserLogin = () => {
   const [setIsLoading] = useOutletContext();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -23,6 +23,9 @@ const UserLogin = ({ setServerResponse }) => {
         type="password"
         onChange={(e) => setPassword(e.target.value)}
       />
+      <p className="auth-p" onClick={() => navigate("/forget")}>
+        Forgot Password
+      </p>
       <button
         className="login-submit-btn"
         onClick={async () => {

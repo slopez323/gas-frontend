@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useAuth } from "../Helpers/AuthHook";
 
-const NewUserDetails = ({ setUpdateList, setShowCreateNew }) => {
+const NewUserDetails = ({ setUpdateList, setShowCreateNew, setIsLoading }) => {
+  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -11,8 +12,9 @@ const NewUserDetails = ({ setUpdateList, setShowCreateNew }) => {
 
   const { checkDetails } = useAuth();
 
-  const register = async (username, password, access) => {
-    const userDetails = { username, password, access };
+  const register = async (email, username, password, access) => {
+    setIsLoading(true);
+    const userDetails = { email, username, password, access };
     const url = `${process.env.REACT_APP_URL_ENDPOINT}/admin/create-user`;
     const response = await fetch(url, {
       method: "POST",
@@ -23,12 +25,17 @@ const NewUserDetails = ({ setUpdateList, setShowCreateNew }) => {
     });
     const responseJSON = await response.json();
     setUpdateList(response);
+    setIsLoading(false);
     return responseJSON;
   };
 
   return (
     <div className="popup-container">
       <div className="popup new-user-popup">
+        <input
+          placeholder="Email Address"
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <input
           placeholder="Username"
           onChange={(e) => setUsername(e.target.value)}
@@ -51,10 +58,16 @@ const NewUserDetails = ({ setUpdateList, setShowCreateNew }) => {
           style={{ fontWeight: "bold" }}
           className="admin-buttons"
           onClick={async () => {
-            const error = await checkDetails(username, password, confirm);
+            const error = await checkDetails(
+              email,
+              username,
+              password,
+              confirm
+            );
             if (error === "") {
               setShowError(false);
               const registerResponse = await register(
+                email,
                 username,
                 password,
                 access

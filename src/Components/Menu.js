@@ -4,7 +4,13 @@ import { faGasPump, faStar, faList } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../Helpers/AuthHook";
 import { useEffect, useRef } from "react";
 
-const Menu = ({ showMenu, setShowMenu, setShowConfirmPopup, username }) => {
+const Menu = ({
+  showMenu,
+  setShowMenu,
+  setShowConfirmPopup,
+  username,
+  setShowChangePass,
+}) => {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
@@ -61,6 +67,14 @@ const Menu = ({ showMenu, setShowMenu, setShowConfirmPopup, username }) => {
         </p>
       </div>
       <div className="account-options">
+        <p
+          onClick={() => {
+            setShowChangePass(true);
+            setShowMenu("hide");
+          }}
+        >
+          Change Password
+        </p>
         <p
           onClick={async () => {
             const logoutResponse = await logout();

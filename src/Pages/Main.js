@@ -7,6 +7,7 @@ import Menu from "../Components/Menu";
 import ConfirmPopup from "../Components/ConfirmPopup";
 import Loading from "../Components/Loading";
 import { useAuth } from "../Helpers/AuthHook";
+import NewPassword from "../Components/NewPassword";
 
 const Main = () => {
   const [username, setUsername] = useState("");
@@ -22,6 +23,7 @@ const Main = () => {
   const [filterType, setFilterType] = useState("all");
   const [sortType, setSortType] = useState("desc");
   const [isLoading, setIsLoading] = useState(false);
+  const [showChangePass, setShowChangePass] = useState(false);
 
   const { userId, isAdmin } = useAuth();
   const navigate = useNavigate();
@@ -118,6 +120,7 @@ const Main = () => {
   return (
     <div className="user-view" style={{ height: window.innerHeight }}>
       {isLoading && <Loading />}
+      {showChangePass && <NewPassword setShowChangePass={setShowChangePass} />}
       <div className="header">
         <FontAwesomeIcon
           icon={faBars}
@@ -145,6 +148,7 @@ const Main = () => {
         setShowMenu={setShowMenu}
         setShowConfirmPopup={setShowConfirmPopup}
         username={username}
+        setShowChangePass={setShowChangePass}
       />
       {showConfirmPopup && (
         <ConfirmPopup setShowConfirmPopup={setShowConfirmPopup} />

@@ -3,13 +3,16 @@ const ConfirmDelete = ({
   id,
   setShowConfirmDelete,
   setUpdateList,
+  setIsLoading,
 }) => {
   const deleteUser = async (id) => {
+    setIsLoading(true);
     const url = `${process.env.REACT_APP_URL_ENDPOINT}/admin/delete-user/${id}`;
     const response = await fetch(url, {
       method: "DELETE",
     });
     const responseJSON = await response.json();
+    setIsLoading(false);
     return responseJSON;
   };
 

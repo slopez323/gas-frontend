@@ -1,17 +1,21 @@
 import { useState } from "react";
 
 const EditUserDetails = ({
+  email,
   username,
   id,
   access,
   setShowEditUser,
   setUpdateList,
+  setIsLoading,
 }) => {
+  const [editEmail, setEditEmail] = useState(email);
   const [editUsername, setEditUsername] = useState(username);
   const [editAccess, setEditAccess] = useState(access);
 
-  const editUser = async (id, username, access) => {
-    const userDetails = { id, username, access };
+  const editUser = async (id, email, username, access) => {
+    setIsLoading(true);
+    const userDetails = { id, email, username, access };
     const url = `${process.env.REACT_APP_URL_ENDPOINT}/admin/edit-user`;
     const response = await fetch(url, {
       method: "PUT",
@@ -22,6 +26,7 @@ const EditUserDetails = ({
     });
     const responseJSON = await response.json();
     setUpdateList(response);
+    setIsLoading(false);
     return responseJSON;
   };
 
@@ -30,6 +35,13 @@ const EditUserDetails = ({
       <div className="popup edit-user-popup">
         <div>
           <p>ID:</p> {id}
+        </div>
+        <div>
+          <p>Email Address:</p>
+          <input
+            value={editEmail}
+            onChange={(e) => setEditEmail(e.target.value)}
+          />
         </div>
         <div>
           <p>Username:</p>
@@ -52,7 +64,12 @@ const EditUserDetails = ({
           style={{ fontWeight: "bold" }}
           className="admin-buttons"
           onClick={async () => {
-            const editResponse = await editUser(id, editUsername, editAccess);
+            const editResponse = await editUser(
+              id,
+              editEmail,
+              editUsername,
+              editAccess
+            );
             if (editResponse.success) {
               setShowEditUser(false);
             }

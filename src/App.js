@@ -8,7 +8,7 @@ import Log from "./Components/Log";
 import UserRegistration from "./Components/UserRegistration";
 import UserLogin from "./Components/UserLogin";
 import Admin from "./Pages/Admin";
-import AdminUserList from "./ComponentsAdmin/AdminUserList";
+import ForgotPass from "./Components/ForgotPass";
 
 const App = () => {
   return (
@@ -16,6 +16,7 @@ const App = () => {
       <Route path="/" element={<LoginPage />}>
         <Route path="register" element={<UserRegistration />} />
         <Route index element={<UserLogin />} />
+        <Route path="forget" element={<ForgotPass />} />
       </Route>
       <Route path="/main" element={<Main />}>
         <Route index element={<Dashboard />} />
