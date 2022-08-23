@@ -856,6 +856,28 @@ font-size: .8rem;
   margin-right: 5px;
 }
 
+.station-popup{
+  max-height: 80vh;
+  overflow: auto;
+
+  display: grid;
+}
+
+.station-item, .station-label{
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr;
+}
+
+.station-item p, .station-label p{
+  margin: 0;
+  padding: 5px;
+  border: 1px solid black;
+}
+
+.station-label{
+  color: #2c5777;
+}
+
 @media (min-width: 768px) {
   .login-submit-btn {
     padding: 13px 50px 13px;

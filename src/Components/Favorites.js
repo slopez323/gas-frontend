@@ -5,6 +5,7 @@ import PriceUpdate from "./PriceUpdate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as faStarSolid } from "@fortawesome/free-solid-svg-icons";
 import { DeepCopy, GAS_TYPES } from "../Helpers/helpers";
+import StationData from "./StationData";
 
 const Favorites = () => {
   const [
@@ -31,6 +32,7 @@ const Favorites = () => {
         return (
           <FavItem
             item={item}
+            username={username}
             fetchPrices={fetchPrices}
             removeFav={removeFav}
             updatePrice={updatePrice}
@@ -48,6 +50,7 @@ const Favorites = () => {
 
 const FavItem = ({
   item,
+  username,
   fetchPrices,
   removeFav,
   updatePrice,
@@ -59,9 +62,20 @@ const FavItem = ({
   const { placeId, placeName, placeAddress } = item;
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
   const [prices, setPrices] = useState(DeepCopy(GAS_TYPES));
+  const [data, setData] = useState([]);
+  const [showStationData, setShowStationData] = useState(false);
   const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     placeAddress
   )}&query_place_id=${placeId}`;
+
+  const getStationData = async () => {
+    //   setIsLoading(true);
+    const url = `${process.env.REACT_APP_URL_ENDPOINT}/stations/log/${placeId}`;
+    const response = await fetch(url);
+    const responseJSON = await response.json();
+    return responseJSON.message;
+    //   setIsLoading(false);
+  };
 
   useEffect(() => {
     const runFetch = async () => {
@@ -75,6 +89,14 @@ const FavItem = ({
 
   return (
     <div data-id={placeId} className="fav-item">
+      {showStationData && (
+        <StationData
+          username={username}
+          data={data}
+          placeName={placeName}
+          placeAddress={placeAddress}
+        />
+      )}
       {showUpdatePopup && (
         <PriceUpdate
           priceToUpdate={priceToUpdate}
@@ -84,7 +106,14 @@ const FavItem = ({
           setShowUpdatePopup={setShowUpdatePopup}
         />
       )}
-      <div className="fav-item-title">
+      <div
+        className="fav-item-title"
+        onClick={async () => {
+          const stationData = await getStationData();
+          setData(stationData);
+          setShowStationData(true);
+        }}
+      >
         <div>
           <p className="fav-name">{placeName}</p>
           <p className="fav-address">{placeAddress}</p>
