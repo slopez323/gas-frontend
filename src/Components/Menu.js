@@ -16,17 +16,18 @@ const Menu = ({
 
   const menuRef = useRef();
 
+  const handleClickOutside = (e) => {
+    if (
+      menuRef.current &&
+      !menuRef.current.contains(e.target) &&
+      !e.target.classList.contains("fa-bars") &&
+      !e.target.parentElement.classList.contains("fa-bars")
+    ) {
+      setShowMenu("hide");
+    }
+  };
+
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(e.target) &&
-        !e.target.classList.contains("fa-bars") &&
-        !e.target.parentElement.classList.contains("fa-bars")
-      ) {
-        setShowMenu("hide");
-      }
-    };
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);

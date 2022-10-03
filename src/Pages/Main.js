@@ -91,6 +91,19 @@ const Main = () => {
     setIsLoading(false);
   };
 
+  const getUserData = async () => {
+    setIsLoading(true);
+    const url = `${process.env.REACT_APP_URL_ENDPOINT}/users/user?id=${userId}&page=${page}&limit=10&filter=${filterType}&sort=${sortType}`;
+    const response = await fetch(url);
+    const responseJSON = await response.json();
+
+    setUsername(responseJSON.message.username);
+    setFavorites(responseJSON.message.favorites);
+    setUserLog(responseJSON.message.log);
+    setNumPages(Math.ceil(responseJSON.message.totalLogs / 10));
+    setIsLoading(false);
+  };
+
   useEffect(() => {
     if (userId) {
       navigate("/main");
@@ -102,18 +115,6 @@ const Main = () => {
   }, [filterType]);
 
   useEffect(() => {
-    const getUserData = async () => {
-      setIsLoading(true);
-      const url = `${process.env.REACT_APP_URL_ENDPOINT}/users/user?id=${userId}&page=${page}&limit=10&filter=${filterType}&sort=${sortType}`;
-      const response = await fetch(url);
-      const responseJSON = await response.json();
-
-      setUsername(responseJSON.message.username);
-      setFavorites(responseJSON.message.favorites);
-      setUserLog(responseJSON.message.log);
-      setNumPages(Math.ceil(responseJSON.message.totalLogs / 10));
-      setIsLoading(false);
-    };
     if (userId) getUserData();
   }, [userId, updateUserData, sortType, filterType, page]);
 

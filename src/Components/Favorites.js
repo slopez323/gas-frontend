@@ -63,13 +63,14 @@ const FavItem = ({
     placeAddress
   )}&query_place_id=${placeId}`;
 
+  const runFetch = async () => {
+    setIsLoading(true);
+    const data = await fetchPrices(placeId);
+    if (data.success && !data.no_prices) setPrices(data.message);
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    const runFetch = async () => {
-      setIsLoading(true);
-      const data = await fetchPrices(placeId);
-      if (data.success && !data.no_prices) setPrices(data.message);
-      setIsLoading(false);
-    };
     runFetch();
   }, [priceReload]);
 

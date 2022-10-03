@@ -9,32 +9,32 @@ export const AuthProvider = ({ children }) => {
   const [authUpdate, setAuthUpdate] = useState();
   const [isAuthLoading, setIsAuthLoading] = useState(false);
 
+  const verify = async () => {
+    setIsAuthLoading(true);
+    const url = `${urlEndpoint}/users/validate-token`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        [process.env.REACT_APP_TOKEN_HEADER_KEY]: user,
+      },
+    });
+    const responseJSON = await response.json();
+    if (responseJSON.success) {
+      setUserId(responseJSON.message);
+      setIsAdmin(responseJSON.isAdmin);
+    } else removeUserToken();
+    setAuthUpdate(response);
+    setIsAuthLoading(false);
+    return responseJSON;
+  };
+
   useEffect(() => {
     const loggedUser = getUserToken();
     setUser(loggedUser);
   }, [authUpdate]);
 
   useEffect(() => {
-    const verify = async () => {
-      setIsAuthLoading(true);
-      const url = `${urlEndpoint}/users/validate-token`;
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          [process.env.REACT_APP_TOKEN_HEADER_KEY]: user,
-        },
-      });
-      const responseJSON = await response.json();
-      if (responseJSON.success) {
-        setUserId(responseJSON.message);
-        setIsAdmin(responseJSON.isAdmin);
-      } else removeUserToken();
-      setAuthUpdate(response);
-      setIsAuthLoading(false);
-      return responseJSON;
-    };
-
     if (user) {
       verify();
     } else {

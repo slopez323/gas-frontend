@@ -26,29 +26,31 @@ const MapPage = () => {
   const [clicked, setClicked] = useState();
   const [searchedLoc, setSearchedLoc] = useState();
 
+  const getPrices = async () => {
+    const listCopy = DeepCopy(listInfo);
+    for (let i = 0; i < listCopy.length; i++) {
+      const data = await fetchPrices(listCopy[i].place_id);
+      if (data.success && !data.no_prices) {
+        listCopy[i].prices = data.message;
+      } else {
+        listCopy[i].prices = DeepCopy(GAS_TYPES);
+      }
+    }
+    return listCopy;
+  };
+
+  const setPrices = async () => {
+    setIsLoading(true);
+    const updatedList = await getPrices();
+    setListWPrices(updatedList);
+    setIsLoading(false);
+  };
+
   useEffect(() => {
     setIsLoading(true);
   }, []);
 
   useEffect(() => {
-    const listCopy = DeepCopy(listInfo);
-    const getPrices = async () => {
-      for (let i = 0; i < listCopy.length; i++) {
-        const data = await fetchPrices(listCopy[i].place_id);
-        if (data.success && !data.no_prices) {
-          listCopy[i].prices = data.message;
-        } else {
-          listCopy[i].prices = DeepCopy(GAS_TYPES);
-        }
-      }
-      return;
-    };
-    const setPrices = async () => {
-      setIsLoading(true);
-      await getPrices();
-      setListWPrices(listCopy);
-      setIsLoading(false);
-    };
     if (listInfo.length) setPrices();
   }, [listInfo, priceReload]);
 
