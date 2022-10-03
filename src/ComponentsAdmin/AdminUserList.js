@@ -21,23 +21,24 @@ const AdminUserList = ({ setIsLoading }) => {
 
   const searchRef = useRef();
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      setIsLoading(true);
-      const url = `${
-        process.env.REACT_APP_URL_ENDPOINT
-      }/admin/all-users?page=${page}&limit=10&filter=${filterType}&searchType=${searchType}&searchTerm=${
-        searchTerm ? searchTerm : "none"
-      }`;
-      const response = await fetch(url);
-      const responseJSON = await response.json();
+  const fetchUsers = async () => {
+    setIsLoading(true);
+    const url = `${
+      process.env.REACT_APP_URL_ENDPOINT
+    }/admin/all-users?page=${page}&limit=10&filter=${filterType}&searchType=${searchType}&searchTerm=${
+      searchTerm ? searchTerm : "none"
+    }`;
+    const response = await fetch(url);
+    const responseJSON = await response.json();
 
-      if (responseJSON.success) {
-        setAllUsers(responseJSON.message);
-        setNumPages(Math.ceil(responseJSON.count / 10));
-      }
-      setIsLoading(false);
-    };
+    if (responseJSON.success) {
+      setAllUsers(responseJSON.message);
+      setNumPages(Math.ceil(responseJSON.count / 10));
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
     fetchUsers();
   }, [page, filterType, updateList, searchTerm]);
 

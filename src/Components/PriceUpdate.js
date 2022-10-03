@@ -30,6 +30,18 @@ const PriceUpdate = ({
     }
   };
 
+  const handleKeydown = (e) => {
+    if (
+      (Number(e.key) >= 0 && Number(e.key) <= 9) ||
+      e.key === "Backspace" ||
+      e.key === "Enter" ||
+      e.key === "Escape"
+    ) {
+      const keyData = { key: e.key, count: keypress.count + 1 };
+      setKeypress(keyData);
+    }
+  };
+
   useEffect(() => {
     if (window.matchMedia("(pointer: coarse)").matches) {
       setIsMobile(true);
@@ -39,17 +51,6 @@ const PriceUpdate = ({
   }, []);
 
   useEffect(() => {
-    const handleKeydown = (e) => {
-      if (
-        (Number(e.key) >= 0 && Number(e.key) <= 9) ||
-        e.key === "Backspace" ||
-        e.key === "Enter" ||
-        e.key === "Escape"
-      ) {
-        const keyData = { key: e.key, count: keypress.count + 1 };
-        setKeypress(keyData);
-      }
-    };
     window.addEventListener("keydown", handleKeydown);
     return () => window.removeEventListener("keydown", handleKeydown);
   }, []);
